@@ -1,0 +1,11 @@
+---
+- name: Create router on openstack
+  hosts: localhost
+  
+  tasks:
+    - name: Create router
+      os_router:
+        name: router
+        network: public
+        interfaces:
+          - lan-subnet
