@@ -1,0 +1,13 @@
+---
+- name: Create subnet on openstack
+  hosts: localhost
+  
+  tasks:
+    - name: Create subnet
+      os_subnet:
+        network_name: lan
+        name: lan-subnet
+        cidr: 192.168.20.0/24
+        dns_nameservers:
+          - 194.47.199.4
+          - 194.47.110.97
