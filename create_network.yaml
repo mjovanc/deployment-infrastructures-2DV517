@@ -5,4 +5,4 @@
   tasks:
     - name: Create local network
       os_network:
-        name: lan
+        name: "{{network_name}}"

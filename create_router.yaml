@@ -8,4 +8,4 @@
         name: router
         network: public
         interfaces:
-          - lan-subnet
+          - "{{subnet_name}}"
