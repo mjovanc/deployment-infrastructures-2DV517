@@ -1,0 +1,4 @@
+---
+- import_playbook: create_network.yaml
+- import_playbook: create_subnet.yaml
+- import_playbook: create_router.yaml
