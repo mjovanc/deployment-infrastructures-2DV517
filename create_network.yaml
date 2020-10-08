@@ -1,0 +1,8 @@
+---
+- name: Create local network on openstack
+  hosts: localhost
+  
+  tasks:
+    - name: Create local network
+      os_network:
+        name: lan
