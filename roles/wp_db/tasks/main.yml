@@ -1,0 +1,63 @@
+---
+
+  # Configuration based on resource:
+  # https://www.digitalocean.com/community/tutorials/how-to-use-ansible-to-install-and-set-up-wordpress-with-lamp-on-ubuntu-18-04
+
+  - name: Install MySQL
+    apt:
+      name:
+        - mysql-server
+        - python3-pymysql
+      state: latest
+    tags: [ system ]
+
+  - name: Set root password
+    mysql_user:
+      name: root
+      password: "{{ mysql_root_password }}"
+      login_unix_socket: /var/run/mysqld/mysqld.sock
+    tags: [ mysql, mysql-root ]
+
+  - name: Delete anonymous user accounts
+    mysql_user:
+      name: ''
+      host_all: yes
+      state: absent
+      login_user: root
+      login_password: "{{ mysql_root_password }}"
+    tags: [ mysql ]
+
+  - name: Delete test database
+    mysql_db:
+      name: test
+      state: absent
+      login_user: root
+      login_password: "{{ mysql_root_password }}"
+    tags: [ mysql ]
+
+  - name: Create Wordpress database
+    mysql_db:
+      name: "{{ mysql_db }}"
+      state: present
+      login_user: root
+      login_password: "{{ mysql_root_password }}"
+    tags: [ mysql ]
+
+  - name: Create MySQL user for WordPress database
+    mysql_user:
+      host: "%"
+      name: "{{ mysql_user }}"
+      password: "{{ mysql_password }}"
+      priv: "{{ mysql_db }}.*:ALL"
+      state: present
+      login_user: root
+      login_password: "{{ mysql_root_password }}"
+    tags: [ mysql ]
+  
+  - name: Allow remote connections to MySQL
+    template:
+      src: "files/mysql.conf.d"
+      dest: "/etc/mysql/mysql.conf.d/mysqld.cnf"
+    notify: Restart MySQL
+    tags: [ mysql ]
+
