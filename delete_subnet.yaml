@@ -1,9 +1,0 @@
----
-- name: Delete subnet 
-  hosts: localhost
-  
-  tasks:
-    - name: Delete subnet
-      os_subnet:
-        state: absent
-        name: "{{subnet_name}}"

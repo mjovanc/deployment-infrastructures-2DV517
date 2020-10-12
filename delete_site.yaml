@@ -1,4 +1,5 @@
 ---
-- import_playbook: delete_router.yaml
-- import_playbook: delete_subnet.yaml
-- import_playbook: delete_network.yaml
+- name: Delete initial infrastructure on openstack
+  hosts: localhost
+  roles:
+    - openstack_delete_initial_infrastructure
