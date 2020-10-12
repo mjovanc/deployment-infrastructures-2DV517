@@ -1,0 +1,9 @@
+---
+- name: Delete local network 
+  hosts: localhost
+  
+  tasks:
+    - name: Delete local network
+      os_network:
+        state: absent
+        name: lan
