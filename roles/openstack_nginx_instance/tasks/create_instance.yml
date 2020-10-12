@@ -1,0 +1,13 @@
+---
+- name: Create an instance on openstack
+  hosts: localhost
+
+  tasks:
+    - name: Create OpenStack instance
+      os_server:
+        state: present
+        name: nginx
+        image: Ubuntu server 20.04
+        availability_zone: Education
+        flavor: c1-r1-d10
+        key_name: cscloud-oh222fv
