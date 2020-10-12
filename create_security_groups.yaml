@@ -1,0 +1,9 @@
+---
+- name: Create security groups on openstack
+  hosts: localhost
+
+  tasks:
+    - name: Create a SSH security group
+      os_security_group:
+        name: SSH
+        state: present
