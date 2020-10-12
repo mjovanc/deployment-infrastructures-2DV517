@@ -1,0 +1,11 @@
+---
+- name: Delete router
+  hosts: localhost
+
+  tasks:
+    - name: Delete router and detach interface
+      os_router:
+        state: absent
+        name: router
+        interfaces:
+          - lan-subnet

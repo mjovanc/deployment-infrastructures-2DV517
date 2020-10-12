@@ -1,0 +1,4 @@
+---
+- import_playbook: delete_router.yaml
+- import_playbook: delete_subnet.yaml
+- import_playbook: delete_network.yaml
