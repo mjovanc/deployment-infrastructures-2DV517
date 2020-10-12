@@ -22,3 +22,5 @@
           availability_zone: Education
           flavor: c1-r1-d10
           key_name: Marcus
+
+- name: 
