@@ -1,0 +1,5 @@
+---
+- name: Create initial infrastructure on openstack
+  hosts: localhost
+  roles:
+    - openstack_create_initial_infrastructure

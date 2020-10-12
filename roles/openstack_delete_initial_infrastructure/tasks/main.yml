@@ -1,0 +1,4 @@
+---
+- include: delete_router.yml
+- include: delete_subnet.yml
+- include: delete_network.yml

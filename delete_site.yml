@@ -1,0 +1,5 @@
+---
+- name: Delete initial infrastructure on openstack
+  hosts: localhost
+  roles:
+    - openstack_delete_initial_infrastructure
