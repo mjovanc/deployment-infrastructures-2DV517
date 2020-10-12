@@ -1,3 +1,18 @@
 network_name: lan
 subnet_name: lan-subnet
 router_name: router
+
+#MySQL Settings
+mysql_host: "INSERT_HOST_IP"
+mysql_root_password: "INSERT_PASSWORD"
+mysql_db: "INSERT_DATABASE"
+mysql_user: "INSERT_USERNAME"
+mysql_password: "INSERT_PASSWORD"
+
+#WP Settings
+wp_host: "INSERT_HOST_IP"
+wp_conf: "INSERT_HOST_IP.conf"
+wp_port: "80"
+
+wp_home: "http://INSERT_WP_HOST/"
+wp_siteurl: "http://INSERT_WP_HOST/"

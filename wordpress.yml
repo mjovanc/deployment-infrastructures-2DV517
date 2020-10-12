@@ -1,0 +1,21 @@
+---
+  - name: Common configuration for all hosts
+    hosts: all
+    become: yes
+
+    roles:
+      - common
+
+  - name: Configure Wordpress frontend
+    hosts: wp_frontend
+    become: yes
+  
+    roles:
+      - wp_frontend
+
+  - name: Configure Wordpress database
+    hosts: wp_db
+    become: yes
+    
+    roles:
+        - wp_db

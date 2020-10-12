@@ -5,5 +5,4 @@ Deployment Infrastructures - 2DV517
 Marcus Cvjeticanin - [@mjovanc](https://github.com/mjovanc)\
 Olof Haga - [@ohaganight](https://github.com/ohaganight)\
 Jesper Eriksson - [@JesperEriksson97](https://github.com/JesperEriksson97)\
-alexyo - [@alexkarls](https://github.com/alexkarls)
-
+Alex Karlsson - [@alexkarls](https://github.com/alexkarls)

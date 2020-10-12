@@ -1,0 +1,7 @@
+---
+- name: Create router
+  os_router:
+    name: "{{router_name}}"
+    network: public
+    interfaces:
+      - "{{subnet_name}}"

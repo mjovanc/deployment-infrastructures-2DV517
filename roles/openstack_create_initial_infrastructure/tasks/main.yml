@@ -1,0 +1,4 @@
+---
+- include: create_network.yml
+- include: create_subnet.yml
+- include: create_router.yml
