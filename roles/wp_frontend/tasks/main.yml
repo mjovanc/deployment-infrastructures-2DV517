@@ -1,0 +1,84 @@
+---
+
+  # Configuration based on resource:
+  # https://www.digitalocean.com/community/tutorials/how-to-use-ansible-to-install-and-set-up-wordpress-with-lamp-on-ubuntu-18-04
+
+  - name: Install Apache, PHP and PHP-Wordpress packages
+    apt:
+      name:
+        - apache2
+        - php
+        - php-mysql
+        - libapache2-mod-php
+      state: latest
+    tags: [ system ]
+
+  # Apache 
+  - name: Create document root
+    file:
+      path: "/var/www/{{ wp_host }}"
+      state: directory
+      owner: "www-data"
+      group: "www-data"
+      mode: '0755'
+    tags: [ apache ]
+
+  - name: Set up Apache VirtualHost
+    template:
+      src: "files/apache.conf.j2"
+      dest: "/etc/apache2/sites-available/{{ wp_conf }}"
+    notify: Reload Apache
+    tags: [ apache ]
+
+  - name: Enable rewrite module
+    shell: /usr/sbin/a2enmod rewrite
+    notify: Reload Apache
+    tags: [ apache ]
+
+  - name: Enable new site
+    shell: /usr/sbin/a2ensite {{ wp_conf }}
+    notify: Reload Apache
+    tags: [ apache ]
+
+  - name: Disable default Apache site
+    shell: /usr/sbin/a2dissite 000-default.conf
+    notify: Restart Apache
+    tags: [ apache ]
+
+  # WordPress 
+  - name: Download and unpack latest WordPress
+    unarchive:
+      src: https://wordpress.org/latest.tar.gz
+      dest: "/var/www/{{ wp_host }}"
+      remote_src: yes
+      creates: "/var/www/{{ wp_host }}/wordpress"
+    tags: [ wordpress ]
+
+  - name: Set ownership
+    file:
+      path: "/var/www/{{ wp_host }}"
+      state: directory
+      recurse: yes
+      owner: www-data
+      group: www-data
+    tags: [ wordpress ]
+
+  - name: Set permissions for directories
+    shell: "/usr/bin/find /var/www/{{ wp_host }}/wordpress/ -type d -exec chmod 750 {} \\;"
+    tags: [ wordpress ]
+
+  - name: Set permissions for files
+    shell: "/usr/bin/find /var/www/{{ wp_host }}/wordpress/ -type f -exec chmod 640 {} \\;"
+    tags: [ wordpress ]
+
+  - name: Set up wp-config
+    template:
+      src: "files/wp-config.php.j2"
+      dest: "/var/www/{{ wp_host }}/wordpress/wp-config.php"
+    tags: [ wordpress ]
+
+  - name: Set up .htaccess
+    template:
+      src: "files/.htaccess"
+      dest: "/var/www/{{ wp_host }}/wordpress/.htaccess"
+    tags: [ wordpress ]
