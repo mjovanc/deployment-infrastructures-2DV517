@@ -3,3 +3,15 @@
   hosts: localhost
   roles:
     - openstack_create_initial_infrastructure
+
+- hosts: mysql-master
+  become: true
+  roles:
+    - common
+    - mysql
+
+- hosts: mysql-slave
+  become: true
+  roles:
+    - common
+    - mysql

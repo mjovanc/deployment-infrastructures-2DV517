@@ -1,5 +1,5 @@
 ---
-- name: Creates an instance on openstack
+- name: Creates MySQL instances on openstack
   hosts: localhost
 
   tasks:
@@ -22,5 +22,3 @@
           availability_zone: Education
           flavor: c1-r1-d10
           key_name: Marcus
-
-- name: 
