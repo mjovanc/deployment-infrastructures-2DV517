@@ -6,4 +6,4 @@
     - name: Delete subnet
       os_subnet:
         state: absent
-        name: lan-subnet
+        name: "{{subnet_name}}"
