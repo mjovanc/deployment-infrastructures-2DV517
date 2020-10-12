@@ -5,7 +5,7 @@
   tasks:
     - name: Create router
       os_router:
-        name: router
+        name: "{{router_name}}"
         network: public
         interfaces:
           - "{{subnet_name}}"

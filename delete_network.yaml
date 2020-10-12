@@ -6,4 +6,4 @@
     - name: Delete local network
       os_network:
         state: absent
-        name: lan
+        name: "{{network_name}}"

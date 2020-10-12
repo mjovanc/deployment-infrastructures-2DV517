@@ -6,6 +6,6 @@
     - name: Delete router and detach interface
       os_router:
         state: absent
-        name: router
+        name: "{{router_name}}"
         interfaces:
-          - lan-subnet
+          - "{{subnet_name}}"
