@@ -15,3 +15,16 @@
         port_range_min: 22
         port_range_max: 22
         remote_ip_prefix: 0.0.0.0/0
+        
+    - name: Create a security group for HTTP
+      os_security_group:
+        name: HTTP
+        state: present
+    
+    - name: Add rule to the HTTP security group
+      os_security_group_rule:
+        security_group: HTTP
+        protocol: tcp
+        port_range_min: 80
+        port_range_max: 80
+        remote_ip_prefix: 0.0.0.0/0
