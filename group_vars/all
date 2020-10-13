@@ -1,7 +1,0 @@
-mysql_server_port: 6033
-mysql_repl_db: portal
-mysql_repl_user: repl_user
-replicate_databases:
-  - portal
-replicate_ignore_tables:
-  - portal.hoge

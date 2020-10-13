@@ -4,14 +4,16 @@
   roles:
     - openstack_create_initial_infrastructure
 
-- hosts: mysql-master
+- name: Creating MySQL master instance
+  hosts: mysqlmaster
   become: true
   roles:
     - common
-    - mysql
+    - mysql-master
 
-- hosts: mysql-slave
+- name: Creating MySQL slave instance
+  hosts: mysqlslave
   become: true
   roles:
     - common
-    - mysql
+    - mysql-slave

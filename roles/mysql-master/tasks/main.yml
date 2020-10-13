@@ -1,0 +1,12 @@
+---
+- name: MySQL master docker container
+  docker_container:
+    name: docker
+    state: started
+    image: bergerx/mysql-replication:latest
+    ports:
+      - "3306:3306"
+
+- name: Start docker container
+  shell: docker run -d --name mysql_master -e MYSQL_ALLOW_EMPTY_PASSWORD=1 bergerx/mysql-replication:5.7
+
