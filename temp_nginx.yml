@@ -1,0 +1,10 @@
+---
+- name: Create initial infrastructure on openstack
+  hosts: localhost
+  roles:
+    - openstack_nginx_create_instance
+    
+- name: Create initial infrastructure on openstack
+  hosts: nginx
+  roles:
+    - openstack_nginx_install
