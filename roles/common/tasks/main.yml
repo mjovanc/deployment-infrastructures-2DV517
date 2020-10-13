@@ -4,3 +4,19 @@
       update_cache: yes 
       upgrade: dist
     tags: [ system ]
+
+  - name: change apt repository to jp
+    replace:
+      dest=/etc/apt/sources.list
+      regexp="http://archive\.ubuntu\.com/"
+      replace="http://jp.archive.ubuntu.com/"
+    register: result
+
+  - name: set timezone to Africa/Johannesburg
+    copy:
+      src=etc/timezone
+      dest=/etc/timezone
+
+  - name: apt-get update
+    apt: update_cache=yes
+    when: result.changed

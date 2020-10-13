@@ -1,0 +1,20 @@
+---
+- name: Create OpenStack instance
+  os_server:
+    state: present
+    name: mysql_master
+    network: "{{network_name}}"
+    image: Ubuntu server 20.04
+    availability_zone: Education
+    flavor: c1-r1-d10
+    key_name: Marcus
+
+- name: Create OpenStack instance
+  os_server:
+    state: present
+    name: mysql_slave
+    network: "{{network_name}}"
+    image: Ubuntu server 20.04
+    availability_zone: Education
+    flavor: c1-r1-d10
+    key_name: Marcus
