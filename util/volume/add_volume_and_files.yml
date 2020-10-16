@@ -1,0 +1,28 @@
+---
+- name: create a volume
+  hosts: localhost
+  tasks:
+
+  - name: Create 10 GB volume
+    os_volume:
+      state: present
+      availability_zone: nova
+      size: 10
+      display_name: "{{ volume_name }}"
+      scheduler_hints:
+
+  - name: Attach volume to host
+    os_server_volume:
+      state: present
+      server: "{{ instance_name }}"
+      volume: "{{ volume_name }}"
+      device: /dev/vdb
+
+- hosts: "{{ instance_ip }}"
+
+  tasks:
+
+    - name: Copy files to instance
+      synchronize:
+        src: ./volume_files
+        dest: /home/ubuntu
