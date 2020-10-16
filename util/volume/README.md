@@ -29,7 +29,7 @@ The volume should now contain the data found in /<PATH>
 
 ## Wordpress (wp-content) steps
 
-1. Run *sudo cp -r /home/ubuntu/volume_files/wp-content/* /var/www/<WP_HOST>/wordpress/wp-content/*
+1. Run *sudo cp -r /home/ubuntu/volume_files/wp-content/ /var/www/<WP_HOST>/wordpress/wp-content/*
 2. Run *sudo mount /dev/sdb /var/www/<WP_HOST>/wordpress/wp-content/*
 
 The data should be found in **/var/www/<WP_HOST>/wordpress/wp-content/** and should now be mounted to the volume.
