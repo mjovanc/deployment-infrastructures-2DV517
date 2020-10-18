@@ -7,7 +7,7 @@ clouds.*
 
 ### Ansible ###
 *.retry
-anisble.cfg
+ansible.cfg
 
 ### Linux ###
 *~
