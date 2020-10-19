@@ -29,11 +29,18 @@
     size: 4096
     state: present
     force: no
+    
+- name: Clone project repo from github
+  become: yes
+  git:
+    repo: https://github.com/mjovanc/deployment-infrastructures-2DV517.git
+    dest: /home/ubuntu/ansible
 
 - name: Copy clouds.yml to control node  #VARIABLES
+  become: yes
   copy:
     src: clouds.yaml
-    dest: /home/ubuntu/clouds.yml
+    dest: /home/ubuntu/ansible/clouds.yml
     owner: ubuntu
     group: ubuntu
     mode: '0644'
