@@ -3,6 +3,11 @@
   hosts: localhost
   roles:
     - openstack_ansible_create_instance
+  
+  tasks:  
+    - name: Wait for SSH to be ready
+      pause:
+        seconds: 30
     
 - name: Install Ansible
   hosts: ansible
