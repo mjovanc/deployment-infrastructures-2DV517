@@ -1,18 +1,5 @@
 ---
-#- name: Create initial infrastructure on openstack
-#  hosts: localhost
-#  roles:
-#    - openstack_create_initial_infrastructure
-
-- name: Creating MySQL master instance
-  hosts: mysqlmaster
+- name: Create initial infrastructure on openstack
+  hosts: localhost
   roles:
-#    - common
-    - mysql-master
-
-# - name: Creating MySQL slave instance
-#   hosts: mysqlslave
-#   become: true
-#   roles:
-#     - common
-#     - mysql-slave
+    - openstack_create_initial_infrastructure

@@ -4,10 +4,6 @@
   apt:
     name: [mysql-server, mysql-client]
     state: latest
-    
-- name: WAIT
-  pause:
-    seconds: 20
 
 - name: Copy a MySQL master .conf file into place, backing up the original if it differs from the copied version
   become: yes
@@ -18,10 +14,6 @@
     group: root
     mode: 0644
     backup: yes
-
-- name: WAIT
-  pause:
-    seconds: 20
 
 - name: Restarting MySQL
   become: yes
