@@ -1,11 +1,6 @@
 ---
-- name: MySQL slave docker container
-  docker_container:
-    name: docker
-    state: started
-    image: bergerx/mysql-replication:latest
-    ports:
-      - "3306:3306"
-
-- name: Start docker container
-  shell: docker run -d --name mysql_slave -e MYSQL_ALLOW_EMPTY_PASSWORD=1 --link mysql_master:master bergerx/mysql-replication:5.7
+- name: MySQL slave
+  apt:
+    name: 
+      - mysql-server
+      - mysql-client

@@ -16,3 +16,11 @@ wp_port: "80"
 
 wp_home: "http://INSERT_WP_HOST/"
 wp_siteurl: "http://INSERT_WP_HOST/"
+
+mysql_master_host: "194.47.177.21"
+
+mysql_replication_user: "mysqlmaster"
+mysql_replication_user_password: "mysqlpassword"
+mysql_master_db: "mysql_master"
+mysql_master_file: ""
+mysql_master_position: ""

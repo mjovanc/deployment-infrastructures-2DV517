@@ -2,30 +2,4 @@
 - name: Ubuntu APT update and upgrade
   apt:
     update_cache: yes 
-    upgrade: dist
   tags: [ system ]
-
-- name: Install Python 3
-  apt:
-    name: python3.8
-    state: present
-    update_cache: true
-  become: true
-
-- name: Install pip (Python package manager)
-  apt:
-    name: python3-pip
-    state: present
-    update_cache: true
-  become: true
-
-- name: Docker Python SDK installation
-  pip:
-    name: docker
-  become: True
-
-- name: Docker installation
-  command: snap install docker
-
-- name: Clean up old Docker containers
-  shell: docker stop $(docker ps -aq) && docker rm $(docker ps -a -q)
