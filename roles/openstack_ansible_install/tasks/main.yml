@@ -21,14 +21,14 @@
   shell:
     pip3 install openstacksdk
     
-- name: Generate SSH keypair  #Use os_keypair instead
-  become: yes
-  openssh_keypair:
-    path: "{{ ssh_path_filename }}"
-    type: rsa
-    size: 4096
-    state: present
-    force: no
+#- name: Generate SSH keypair  #Use os_keypair instead
+#  become: yes
+#  openssh_keypair:
+#    path: "{{ ssh_path_filename }}"
+#    type: rsa
+#    size: 4096
+#    state: present
+#    force: no
     
 - name: Clone project repo from github
   become: yes
@@ -44,3 +44,8 @@
     owner: ubuntu
     group: ubuntu
     mode: '0644'
+    
+- name: SSH
+  become: yes
+  os_keypair:
+    name: my_key
