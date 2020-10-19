@@ -7,7 +7,7 @@
   tasks:  
     - name: Wait for SSH to be ready
       pause:
-        seconds: 30
+        seconds: 60
     
 - name: Install Ansible
   hosts: ansible

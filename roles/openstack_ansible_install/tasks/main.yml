@@ -20,3 +20,13 @@
   become: yes
   shell:
     pip3 install openstacksdk
+    
+- name: Generate SSH keypair
+  become: yes
+  openssh_keypair:
+    path: /home/ubuntu/.ssh/ssh_keypair
+    type: rsa
+    size: 4096
+    state: present
+    force: no
+    
