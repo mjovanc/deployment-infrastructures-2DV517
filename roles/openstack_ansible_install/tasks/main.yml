@@ -21,7 +21,7 @@
   shell:
     pip3 install openstacksdk
     
-- name: Generate SSH keypair
+- name: Generate SSH keypair  #Use os_keypair instead
   become: yes
   openssh_keypair:
     path: "{{ ssh_path_filename }}"
@@ -29,4 +29,11 @@
     size: 4096
     state: present
     force: no
-    
+
+- name: Copy clouds.yml to control node  #VARIABLES
+  copy:
+    src: clouds.yaml
+    dest: /home/ubuntu/clouds.yml
+    owner: ubuntu
+    group: ubuntu
+    mode: '0644'
