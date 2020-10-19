@@ -6,8 +6,8 @@
     image: Ubuntu server 20.04
     availability_zone: Education
     flavor: c4-r8-d80
-    key_name: cscloud-oh222fv
+    key_name: "{{ ssh_key_name }}"
     security_groups: SSH
     floating_ips:
-      - 194.47.176.255
+      - "{{ floating_ip }}"
     

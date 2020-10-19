@@ -4,7 +4,7 @@
   apt:
     update_cache: yes 
 
-- name: Install Ansible
+- name: Install Ansible #Maybe install Ansible with pip3 instead?
   become: yes
   apt:
     name: ansible
@@ -24,7 +24,7 @@
 - name: Generate SSH keypair
   become: yes
   openssh_keypair:
-    path: /home/ubuntu/.ssh/ssh_keypair
+    path: "{{ ssh_path_filename }}"
     type: rsa
     size: 4096
     state: present
