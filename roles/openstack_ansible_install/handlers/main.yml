@@ -1,0 +1,4 @@
+---
+- name: Ubuntu update    
+  apt:
+    update_cache: yes 

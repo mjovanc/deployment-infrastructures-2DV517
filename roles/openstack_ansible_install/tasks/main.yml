@@ -1,0 +1,8 @@
+---
+- name: Install Ansible
+  become: yes
+  notify: Ubuntu update
+  apt:
+    name: ansible
+    state: latest
+    
