@@ -1,0 +1,13 @@
+---
+- name: Create ansible control node machine on openstack
+  os_server:
+    state: present
+    name: ansible
+    image: Ubuntu server 20.04
+    availability_zone: Education
+    flavor: c4-r8-d80
+    key_name: "{{ ssh_key_name }}"
+    security_groups: SSH
+    floating_ips:
+      - "{{ floating_ip }}"
+    
