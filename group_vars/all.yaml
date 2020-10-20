@@ -3,16 +3,16 @@ subnet_name: lan-subnet
 router_name: router
 
 #MySQL Settings
-mysql_host: "INSERT_HOST_IP"
-mysql_root_password: "INSERT_PASSWORD"
-mysql_db: "INSERT_DATABASE"
-mysql_user: "INSERT_USERNAME"
-mysql_password: "INSERT_PASSWORD"
+mysql_host: "194.47.176.249"
+mysql_root_password: "TEMP-98765"
+mysql_db: "wp"
+mysql_user: "wp"
+mysql_password: "TEMP-98765"
 
 #WP Settings
-wp_host: "INSERT_HOST_IP"
-wp_conf: "INSERT_HOST_IP.conf"
+wp_host: "194.47.177.7"
+wp_conf: "194.47.177.7.conf"
 wp_port: "80"
 
-wp_home: "http://INSERT_WP_HOST/"
-wp_siteurl: "http://INSERT_WP_HOST/"
+wp_home: "http://194.47.177.7/"
+wp_siteurl: "http://194.47.177.7/"
