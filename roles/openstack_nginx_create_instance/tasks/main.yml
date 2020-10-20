@@ -6,8 +6,13 @@
     image: Ubuntu server 20.04
     availability_zone: Education
     flavor: c1-r1-d10
-    key_name: cscloud-oh222fv
-    security_groups: SSH,HTTP
-    floating_ips:
-      - 194.47.176.254
-    
+    key_name: ansible_key
+    security_groups: default,SSH,HTTP
+  register: nginx
+
+- name: Add to inventory
+  add_host:
+    name: nginx
+    ansible_host: "{{ nginx.openstack.private_v4 }}" 
+    ansible_user: ubuntu
+    public_host: "{{ nginx.openstack.accessIPv4 }}"
