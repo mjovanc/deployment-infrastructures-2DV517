@@ -23,9 +23,16 @@
       mode: '0755'
     tags: [ apache ]
 
+  - name: Set up Apache configuration
+    template:
+      src: "files/apache2.conf"
+      dest: "/etc/apache2/apache2.conf"
+    notify: Reload Apache
+    tags: [ apache ]
+  
   - name: Set up Apache VirtualHost
     template:
-      src: "files/apache.conf.j2"
+      src: "files/sites-available.conf.j2"
       dest: "/etc/apache2/sites-available/{{ wp_conf }}"
     notify: Reload Apache
     tags: [ apache ]
