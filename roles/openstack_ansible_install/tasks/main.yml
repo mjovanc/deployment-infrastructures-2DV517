@@ -40,12 +40,12 @@
   become: yes
   copy:
     remote_src: true
-    src: /home/ubuntu/clouds.yaml
+    src: "{{ path_home }}/clouds.yaml"
     dest: "{{ path_home_ansible }}/clouds.yaml"
 
 - name: Remove clouds.yaml from home
   become: yes
   file:
-    path: "{{ path_home_ansible }}/clouds.yaml"
+    path: "{{ path_home }}/clouds.yaml"
     state: absent
   
