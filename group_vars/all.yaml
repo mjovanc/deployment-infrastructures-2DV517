@@ -17,10 +17,15 @@ wp_port: "80"
 wp_home: "http://INSERT_WP_HOST/"
 wp_siteurl: "http://INSERT_WP_HOST/"
 
-mysql_master_host: "194.47.177.21"
 
-mysql_replication_user: "mysqlmaster"
+
+mysql_replication_user: "replication_user"
 mysql_replication_user_password: "mysqlpassword"
+
+mysql_master_host: "192.168.20.13" # need to set this automatically when setting up the instance
 mysql_master_db: "mysql_master"
 mysql_master_file: ""
 mysql_master_position: ""
+
+mysql_slave_host: "192.168.20.15" # need to set this automatically before running the role for every slave instance
+

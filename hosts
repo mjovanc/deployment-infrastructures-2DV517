@@ -1,8 +1,0 @@
-[mysqlmaster]
-194.47.177.21
-
-[mysqlslave]
-194.47.177.26
-
-194.47.177.21     ansible_connection=ssh        ansible_user=ubuntu
-194.47.177.26     ansible_connection=ssh        ansible_user=ubuntu

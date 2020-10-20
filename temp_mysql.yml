@@ -1,12 +1,12 @@
 - name: Creating MySQL master instance
+  connection: local
   hosts: mysqlmaster
   roles:
 #    - common
     - mysql-master
 
-#- name: Creating MySQL slave instance
-#  hosts: mysqlslave
-#  become: true
-#  roles:
-#    - common
-#    - mysql-slave
+- name: Creating MySQL slave instance
+  connection: local
+  hosts: mysqlslave
+  roles:
+    - mysql-slave

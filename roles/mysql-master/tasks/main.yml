@@ -1,46 +1,49 @@
 ---
-- name: MySQL master
-  become: yes
-  apt:
-    name: [mysql-server, mysql-client]
-    state: latest
+  - name: MySQL master
+    become: yes
+    apt:
+      name: [mysql-server, mysql-client]
+      state: latest
 
-- name: Copy a MySQL master .conf file into place, backing up the original if it differs from the copied version
-  become: yes
-  copy:
-    src: files/mysqld.cnf
-    dest: /etc/mysql/mysql.conf.d/mysqld.cnf
-    owner: root
-    group: root
-    mode: 0644
-    backup: yes
+  - name: Copy a MySQL master .conf file into place, backing up the original if it differs from the copied version
+    become: yes
+    copy:
+      src: files/mysqld.cnf
+      dest: /etc/mysql/mysql.conf.d/mysqld.cnf
+      owner: root
+      group: root
+      mode: 0644
+      backup: yes
 
-- name: Restarting MySQL
-  become: yes
-  service:
-    name: mysql
-    state: restarted
-    enabled: yes
+  - name: Restarting MySQL
+    become: yes
+    service:
+      name: mysql
+      state: restarted
+      enabled: yes
 
-- name: Create MySQL user for master
-  shell: |
-    mysql -e "CREATE USER '{{ mysql_replication_user }}'@'{{ mysql_master_host }}' IDENTIFIED BY '{{ mysql_replication_user_password }}';"
-    mysql -e "GRANT REPLICATION SLAVE ON *.* TO '{{ mysql_replication_user }} '@'{{ mysql_master_host }}';"
-    mysql -e "GRANT ALL PRIVILEGES ON {{ mysql_master_db }}.* TO '{{ mysql_replication_user }}'@'{{ mysql_master_host }}';"
-    mysql -e "FLUSH PRIVILEGES;"  
-  become: true
+  - name: Create MySQL user for master
+    become: true
+    shell: |
+      mysql -e "CREATE DATABASE {{ mysql_master_db }};" 
+      mysql -e "CREATE USER '{{ mysql_replication_user }}'@'{{ mysql_master_host }}' IDENTIFIED BY '{{ mysql_replication_user_password }}';"
+      mysql -e "GRANT REPLICATION SLAVE ON *.* TO '{{ mysql_replication_user }} '@'{{ mysql_master_host }}';"
+      mysql -e "GRANT ALL PRIVILEGES ON {{ mysql_master_db }}.* TO '{{ mysql_replication_user }}'@'{{ mysql_master_host }}';"
+      mysql -e "FLUSH PRIVILEGES;"
+    
+  - name: Get MySQL master filename
+    shell: mysql -e "SHOW MASTER STATUS" -s | tail -n 1 | awk {'print $1'}
+    register: filename
+    become: true
 
-- name: Get MySQL master filename
-  shell: mysql -e "SHOW MASTER STATUS" -s | tail -n 1 | awk {'print $1'}
-  register: filename
-  become: true
+  - name: Get MySQL master position
+    shell: mysql -e "SHOW MASTER STATUS" -s | tail -n 1 | awk {'print $2'}
+    register: position
+    become: true
 
-- name: Get MySQL master position
-  shell: mysql -e "SHOW MASTER STATUS" -s | tail -n 1 | awk {'print $2'}
-  register: position
-  become: true
+  - name: Register MySQL variables
+    add_host:
+      name: mysql_master_fileposition
+      ansible_mysql_filename: "{{ filename.stdout }}"
+      ansible_mysql_position: "{{ position.stdout }}"
 
-- name: Save MySQL master filename/position
-  set_fact: 
-    mysql_master_file: filename
-    mysql_master_position: position
