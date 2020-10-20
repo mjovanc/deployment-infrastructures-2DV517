@@ -14,5 +14,5 @@
 - name: Add to inventory
   add_host:
     name: wordpress #Duplicate_1
-    ansible_host: "{{ instance.openstack.accessIPv4 }}"
+    ansible_host: "{{ wordpress.openstack.private_v4 }}"
     ansible_user: ubuntu

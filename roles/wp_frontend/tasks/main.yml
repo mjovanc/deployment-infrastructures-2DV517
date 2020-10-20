@@ -16,7 +16,7 @@
   # Apache 
   - name: Create document root
     file:
-      path: "/var/www/{{ hostvars[wordpress][ansible_host] }}"
+      path: "/var/www/{{ hostvars['wordpress']['ansible_host'] }}"
       state: directory
       owner: "www-data"
       group: "www-data"
@@ -26,7 +26,7 @@
   - name: Set up Apache VirtualHost
     template:
       src: "files/apache.conf.j2"
-      dest: "/etc/apache2/sites-available/{{ hostvars[wordpress][ansible_host] }}.conf"
+      dest: "/etc/apache2/sites-available/{{ hostvars['wordpress']['ansible_host'] }}.conf"
     notify: Reload Apache
     tags: [ apache ]
 
@@ -36,7 +36,7 @@
     tags: [ apache ]
 
   - name: Enable new site
-    shell: /usr/sbin/a2ensite "{{ hostvars[wordpress][ansible_host] }}.conf"
+    shell: /usr/sbin/a2ensite "{{ hostvars['wordpress']['ansible_host'] }}.conf"
     notify: Reload Apache
     tags: [ apache ]
 
@@ -49,14 +49,14 @@
   - name: Download and unpack latest Wordpress
     unarchive:
       src: https://wordpress.org/latest.tar.gz
-      dest: "/var/www/{{ hostvars[wordpress][ansible_host] }}"
+      dest: "/var/www/{{ hostvars['wordpress']['ansible_host'] }}"
       remote_src: yes
-      creates: "/var/www/{{ hostvars[wordpress][ansible_host] }}/wordpress"
+      creates: "/var/www/{{ hostvars['wordpress']['ansible_host'] }}/wordpress"
     tags: [ wordpress ]
 
   - name: Set ownership
     file:
-      path: "/var/www/{{ hostvars[wordpress][ansible_host] }}"
+      path: "/var/www/{{ hostvars['wordpress']['ansible_host'] }}"
       state: directory
       recurse: yes
       owner: www-data
@@ -64,29 +64,29 @@
     tags: [ wordpress ]
 
   - name: Set permissions for directories
-    shell: "/usr/bin/find /var/www/{{ hostvars[wordpress][ansible_host] }}/wordpress/ -type d -exec chmod 750 {} \\;"
+    shell: "/usr/bin/find /var/www/{{ hostvars['wordpress']['ansible_host'] }}/wordpress/ -type d -exec chmod 750 {} \\;"
     tags: [ wordpress ]
 
   - name: Set permissions for files
-    shell: "/usr/bin/find /var/www/{{ hostvars[wordpress][ansible_host] }}/wordpress/ -type f -exec chmod 640 {} \\;"
+    shell: "/usr/bin/find /var/www/{{ hostvars['wordpress']['ansible_host'] }}/wordpress/ -type f -exec chmod 640 {} \\;"
     tags: [ wordpress ]
 
   - name: Set up wp-config
     template:
       src: "files/wp-config.php.j2"
-      dest: "/var/www/{{ hostvars[wordpress][ansible_host] }}/wordpress/wp-config.php"
+      dest: "/var/www/{{ hostvars['wordpress']['ansible_host'] }}/wordpress/wp-config.php"
     tags: [ wordpress ]
 
   - name: Set up .htaccess
     template:
       src: "files/.htaccess"
-      dest: "/var/www/{{ hostvars[wordpress][ansible_host] }}/wordpress/.htaccess"
+      dest: "/var/www/{{ hostvars['wordpress']['ansible_host'] }}/wordpress/.htaccess"
     tags: [ wordpress ]
 
   - name: Set up wp-content
     synchronize: 
       src: files/wp-content
-      dest: /var/www/{{ hostvars[wordpress][ansible_host] }}/wordpress
+      dest: /var/www/{{ hostvars['wordpress']['ansible_host'] }}/wordpress
     tags: [ wordpress ]
 
   - name: Create a ext4 filesystem on /dev/sdb unless it exists
@@ -97,7 +97,7 @@
 
   - name: Mount volume
     mount:
-      path: /var/www/{{ hostvars[wordpress][ansible_host] }}/wordpress/wp-content/uploads
+      path: /var/www/{{ hostvars['wordpress']['ansible_host'] }}/wordpress/wp-content/uploads
       src: /dev/sdb
       fstype: ext4
       state: mounted
