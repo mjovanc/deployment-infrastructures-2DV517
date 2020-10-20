@@ -5,18 +5,18 @@
 
   - name: Create 10 GB volume
     os_volume:
-      state: present
-      availability_zone: nova
-      size: 10
       display_name: "{{ volume_name }}"
-      scheduler_hints:
+      size: 10
+      volume_type: rbd
+      availability_zone: nova
+      state: present
 
   - name: Attach volume to host
     os_server_volume:
-      state: present
       server: "{{ instance_name }}"
       volume: "{{ volume_name }}"
       device: /dev/vdb
+      state: present
 
 - hosts: "{{ instance_ip }}"
 
