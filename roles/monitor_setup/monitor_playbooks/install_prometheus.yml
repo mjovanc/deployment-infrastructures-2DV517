@@ -8,14 +8,13 @@
   - name: Download Promethus repo
     get_url:
       url: "{{prometheus_repo}}"
-      dest: /home/{{username}}/
+      dest: /home/ubuntu/
       remote_src: yes
 
   - name: Extract Prometheus tar
     unarchive:
-      src: "/home/{{username}}/{{prometheus_tar_name}}"
-      dest: /home/{{username}}/
-# Remote src should be set to yes otherwise it will look for the tar on the local server and not the target server.
+      src: "/home/ubuntu/{{prometheus_tar_name}}"
+      dest: /home/ubuntu/
       remote_src: yes
 
 

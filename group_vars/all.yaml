@@ -16,3 +16,11 @@ wp_port: "80"
 
 wp_home: "http://INSERT_WP_HOST/"
 wp_siteurl: "http://INSERT_WP_HOST/"
+
+#Monitor Settings
+prometheus_tar: ""
+prometheus_url: ""
+grafana_tar: ""
+grafana_url: ""
+node_exporter_tar: ""
+node_exporter_url: ""

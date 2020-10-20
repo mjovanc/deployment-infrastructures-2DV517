@@ -1,0 +1,27 @@
+---
+- name: Setup grafana service
+  hosts: monitor
+  #become: yes
+  tasks:
+    - name: Downloading packages for deb usage
+      apt:
+        pkg:
+          - apt-transport-https
+          - software-properties-common
+        state: latest
+        update_cache: yes
+    - name: Wget grafana package
+      shell: wget -q -O - https://packages.grafana.com/gpg.key | sudo apt-key add -
+    - name: Tee list source of Grafana
+      shell: sudo tee -a /etc/apt/sources.list.d/grafana.list
+    - name: Update server
+      apt:
+        update_cache: yes
+    - name: Download Grafana package
+      apt:
+        name: grafana-enterprise
+        state: latest
+    - name: Start Grafana server
+      systemd:
+        state: started
+        name: grafana-server
