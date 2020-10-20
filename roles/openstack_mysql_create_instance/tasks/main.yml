@@ -1,0 +1,18 @@
+---
+- name: Create OpenStack instance
+  os_server:
+    state: present
+    name: mysql #Duplicate_1
+    image: Ubuntu server 20.04
+    availability_zone: Education
+    flavor: c1-r1-d10
+    key_name: ansible_key
+    auto_ip: no
+    security_groups: default,SSH,MYSQL
+  register: mysql #Duplicate_1
+
+- name: Add to inventory
+  add_host:
+    name: mysql #Duplicate_1
+    ansible_host: "{{ instance.openstack.accessIPv4 }}"
+    ansible_user: ubuntu
