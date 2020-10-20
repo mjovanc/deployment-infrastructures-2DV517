@@ -19,33 +19,18 @@
 - name: Install Openstack SDK
   become: yes
   shell:
-    pip3 install openstacksdk
-    
-#- name: Generate SSH keypair  #Use os_keypair instead
-#  become: yes
-#  openssh_keypair:
-#    path: "{{ ssh_path_filename }}"
-#    type: rsa
-#    size: 4096
-#    state: present
-#    force: no
+    pip3 install openstacksdk   
     
 - name: Clone project repo from github
-  become: yes
   git:
     repo: https://github.com/mjovanc/deployment-infrastructures-2DV517.git
-    dest: /home/ubuntu/ansible
+    dest: "{{ path_to_ansible_home }}"
 
 - name: Copy clouds.yml to control node  #VARIABLES
-  become: yes
   copy:
     src: clouds.yaml
-    dest: /home/ubuntu/ansible/clouds.yml
-    owner: ubuntu
-    group: ubuntu
-    mode: '0644'
+    dest: "{{ path_to_ansible_home }}/clouds.yaml"
     
-- name: SSH
-  become: yes
+- name: Generate new SSH keypair on openstack
   os_keypair:
-    name: my_key
+    name: "{{ new_ssh_keyname }}"
