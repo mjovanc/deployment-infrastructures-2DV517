@@ -7,8 +7,8 @@
 
   - name: Copy a MySQL master .conf file into place, backing up the original if it differs from the copied version
     become: yes
-    copy:
-      src: files/mysqld.cnf
+    template:
+      src: files/mysqld.cnf.j2
       dest: /etc/mysql/mysql.conf.d/mysqld.cnf
       owner: root
       group: root
