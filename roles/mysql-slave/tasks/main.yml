@@ -1,0 +1,32 @@
+---
+  - name: MySQL slave
+    become: yes
+    apt:
+      name: [mysql-server, mysql-client]
+      state: latest
+  
+  - name: Copy a MySQL slave .conf file into place, backing up the original if it differs from the copied version
+    become: yes
+    copy:
+      src: files/mysqld.cnf
+      dest: /etc/mysql/mysql.conf.d/mysqld.cnf
+      owner: root
+      group: root
+      mode: 0644
+      backup: yes
+  
+  - name: Restarting MySQL
+    become: yes
+    service:
+      name: mysql
+      state: restarted
+      enabled: yes
+  
+  - name: Create MySQL user for slave
+    become: true
+    shell: |
+      mysql -u root -e "STOP SLAVE;"
+      mysql -u root -e "CHANGE MASTER TO MASTER_HOST='{{ mysql_master_host }}', MASTER_USER='{{ mysql_replication_user }}', MASTER_PASSWORD='{{ mysql_replication_user_password }}', MASTER_LOG_FILE='{{ hostvars['mysql_master_fileposition']['ansible_mysql_filename'] }}', MASTER_LOG_POS={{ hostvars['mysql_master_fileposition']['ansible_mysql_position'] }};"
+      mysql -u root -e "START SLAVE;"
+    
+  
