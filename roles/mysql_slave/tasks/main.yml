@@ -1,5 +1,5 @@
 ---
-  - name: MySQL slave
+  - name: Install MySQL on slave
     become: yes
     apt:
       name: [mysql-server, mysql-client, python3-pymysql]

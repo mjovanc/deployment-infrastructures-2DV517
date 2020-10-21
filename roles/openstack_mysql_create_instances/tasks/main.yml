@@ -8,7 +8,7 @@
     flavor: c1-r1-d10
     key_name: ansible_key
     auto_ip: no
-    security_groups: default,SSH,MYSQL
+    security_groups: default,SSH,MySQL
   register: mysqlmaster #Duplicate_1
 
 - name: Add to inventory
@@ -26,7 +26,7 @@
     flavor: c1-r1-d10
     key_name: ansible_key
     auto_ip: no
-    security_groups: default,SSH,MYSQL
+    security_groups: default,SSH,MySQL
   register: mysqlslave #Duplicate_2
 
 - name: Add to inventory

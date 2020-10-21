@@ -16,19 +16,19 @@
 #    roles:
 #      - common
 
-  - name: Configure Wordpress database
+  - name: Configure MySQL master database
     hosts: mysqlmaster
     become: yes
     roles:
         - mysql_master
 
-  - name: Configure Wordpress database
+  - name: Configure MySQL slave database
     hosts: mysqlslave
     become: yes
     roles:
         - mysql_slave
 
-  - name: Configure Wordpress database
+  - name: Configure wordpress configurations on master database
     hosts: mysqlmaster
     become: yes
     roles:
