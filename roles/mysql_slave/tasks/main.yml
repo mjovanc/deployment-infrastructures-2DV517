@@ -26,7 +26,7 @@
     become: true
     shell: |
       mysql -u root -e "STOP SLAVE;"
-      mysql -u root -e "CHANGE MASTER TO MASTER_HOST='hostvars['mysqlmaster']['ansible_host']', MASTER_USER='{{ mysql_replication_user }}', MASTER_PASSWORD='{{ mysql_replication_user_password }}', MASTER_LOG_FILE='{{ hostvars['mysql_master_fileposition']['ansible_mysql_filename'] }}', MASTER_LOG_POS={{ hostvars['mysql_master_fileposition']['ansible_mysql_position'] }};"
+      mysql -u root -e "CHANGE MASTER TO MASTER_HOST='{{ hostvars['mysqlmaster']['ansible_host'] }}', MASTER_USER='{{ mysql_replication_user }}', MASTER_PASSWORD='{{ mysql_replication_user_password }}', MASTER_LOG_FILE='{{ hostvars['mysql_master_fileposition']['ansible_mysql_filename'] }}', MASTER_LOG_POS={{ hostvars['mysql_master_fileposition']['ansible_mysql_position'] }};"
       mysql -u root -e "START SLAVE;"
     
   
