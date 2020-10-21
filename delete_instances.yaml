@@ -1,9 +1,0 @@
----
-- name: Delete instances
-  hosts: localhost
-  
-  tasks:
-    - name: Create OpenStack instance
-      os_server:
-        state: absent
-        name: mysql_master

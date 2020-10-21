@@ -8,6 +8,8 @@
     flavor: c1-r1-d10
     key_name: ansible_key
     security_groups: default,SSH,HTTP
+    floating_ips:
+      - 194.47.177.62
   register: nginx
 
 - name: Add to inventory
