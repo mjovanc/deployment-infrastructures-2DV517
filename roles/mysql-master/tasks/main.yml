@@ -25,13 +25,9 @@
   - name: Create MySQL user for master
     become: true
     shell: |
-      mysql -e "CREATE DATABASE {{ mysql_master_db }};" 
-      mysql -e "CREATE USER '{{ mysql_replication_user }}'@'{{ mysql_master_host }}' IDENTIFIED BY '{{ mysql_replication_user_password }}';"
-      mysql -e "GRANT REPLICATION SLAVE ON *.* TO '{{ mysql_replication_user }} '@'{{ mysql_master_host }}';"
-      mysql -e "GRANT ALL ON {{ mysql_master_db }}.* TO '{{ mysql_replication_user }}'@'{{ mysql_master_host }}';"
-      mysql -e "FLUSH PRIVILEGES;"
-      mysql -e "USE {{ mysql_master_db }};"
-      mysql -e "FLUSH TABLES WITH READ LOCK;"
+      mysql -u root -e "CREATE USER '{{ mysql_replication_user }}'@'{{ mysql_slave_host }}' IDENTIFIED BY '{{ mysql_replication_user_password }}';"
+      mysql -u root -e "ALTER USER '{{ mysql_replication_user }}'@'{{ mysql_slave_host }}' IDENTIFIED WITH mysql_native_password BY '{{ mysql_replication_user_password }}';"
+      mysql -u root -e "GRANT REPLICATION SLAVE ON *.* TO '{{ mysql_replication_user }}'@'{{ mysql_slave_host }}';"
     
   - name: Get MySQL master filename
     shell: mysql -e "SHOW MASTER STATUS" -s | tail -n 1 | awk {'print $1'}

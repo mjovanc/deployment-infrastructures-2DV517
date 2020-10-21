@@ -18,7 +18,6 @@ wp_home: "http://INSERT_WP_HOST/"
 wp_siteurl: "http://INSERT_WP_HOST/"
 
 
-
 mysql_replication_user: "replication_user"
 mysql_replication_user_password: "mysqlpassword"
 

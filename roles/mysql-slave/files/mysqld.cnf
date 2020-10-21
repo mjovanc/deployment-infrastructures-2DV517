@@ -15,13 +15,7 @@
 #
 # * Basic Settings
 #
-user          = mysql
 server-id     = 2
-pid-file      = /var/run/mysqld/mysqld.pid
-socket        = /var/run/mysqld/mysqld.sock
-port          = 3306
-datadir       = /var/lib/mysql
-replicate_do_db            = mysql_master
 
 
 # If MySQL is running as a replication slave, this should be
