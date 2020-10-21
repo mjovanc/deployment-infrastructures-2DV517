@@ -4,6 +4,7 @@
     roles:
       - openstack_wordpress_create_instance
       - openstack_mysql_create_instances
+      - openstack_nginx_create_instance
     tasks:
     - name: Wait for interface to attach
       pause:
@@ -39,3 +40,8 @@
     become: yes
     roles:
       - wp_frontend
+  
+  - name: Install nginx
+    hosts: nginx
+    roles:
+      - openstack_nginx_install
