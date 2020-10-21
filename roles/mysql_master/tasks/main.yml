@@ -1,14 +1,14 @@
 ---
-  - name: MySQL master
+  - name: Install MySQL on master
     become: yes
     apt:
-      name: [mysql-server, mysql-client]
+      name: [mysql-server, mysql-client, python3-pymysql]
       state: latest
 
   - name: Copy a MySQL master .conf file into place, backing up the original if it differs from the copied version
     become: yes
-    copy:
-      src: files/mysqld.cnf
+    template:
+      src: files/mysqld.cnf.j2
       dest: /etc/mysql/mysql.conf.d/mysqld.cnf
       owner: root
       group: root
@@ -25,9 +25,9 @@
   - name: Create MySQL user for master
     become: true
     shell: |
-      mysql -u root -e "CREATE USER '{{ mysql_replication_user }}'@'{{ mysql_slave_host }}' IDENTIFIED BY '{{ mysql_replication_user_password }}';"
-      mysql -u root -e "ALTER USER '{{ mysql_replication_user }}'@'{{ mysql_slave_host }}' IDENTIFIED WITH mysql_native_password BY '{{ mysql_replication_user_password }}';"
-      mysql -u root -e "GRANT REPLICATION SLAVE ON *.* TO '{{ mysql_replication_user }}'@'{{ mysql_slave_host }}';"
+      mysql -u root -p'{{ mysql_root_password }}' -e "CREATE USER '{{ mysql_replication_user }}'@'{{ hostvars['mysqlslave']['ansible_host'] }}' IDENTIFIED BY '{{ mysql_replication_user_password }}';"
+      mysql -u root -p'{{ mysql_root_password }}' -e "ALTER USER '{{ mysql_replication_user }}'@'{{ hostvars['mysqlslave']['ansible_host'] }}' IDENTIFIED WITH mysql_native_password BY '{{ mysql_replication_user_password }}';"
+      mysql -u root -p'{{ mysql_root_password }}' -e "GRANT REPLICATION SLAVE ON *.* TO '{{ mysql_replication_user }}'@'{{ hostvars['mysqlslave']['ansible_host'] }}';"
     
   - name: Get MySQL master filename
     shell: mysql -e "SHOW MASTER STATUS" -s | tail -n 1 | awk {'print $1'}

@@ -96,16 +96,16 @@
       dest: /var/www/{{ hostvars['wordpress']['ansible_host'] }}/wordpress
     tags: [ wordpress ]
 
-  - name: Create a ext4 filesystem on /dev/sdb unless it exists
-    filesystem:
-      fstype: ext4
-      dev: /dev/sdb
-    tags: [ volume, wordpress ]
+#  - name: Create a ext4 filesystem on /dev/sdb unless it exists
+#    filesystem:
+#      fstype: ext4
+#      dev: /dev/sdb
+#    tags: [ volume, wordpress ]
 
-  - name: Mount volume
-    mount:
-      path: /var/www/{{ hostvars['wordpress']['ansible_host'] }}/wordpress/wp-content/uploads
-      src: /dev/sdb
-      fstype: ext4
-      state: mounted
-    tags: [ volume, wordpress ]
+#  - name: Mount volume
+#    mount:
+#      path: /var/www/{{ hostvars['wordpress']['ansible_host'] }}/wordpress/wp-content/uploads
+#      src: /dev/sdb
+#      fstype: ext4
+#      state: mounted
+#    tags: [ volume, wordpress ]

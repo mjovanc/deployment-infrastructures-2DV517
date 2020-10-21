@@ -15,7 +15,7 @@
 #
 # * Basic Settings
 #
-server-id     = 2
+server-id     = 1
 
 
 # If MySQL is running as a replication slave, this should be
@@ -24,7 +24,8 @@ server-id     = 2
 #
 # Instead of skip-networking the default is now to listen only on
 # localhost which is more compatible and is not less secure.
-bind-address            = 192.168.20.15
+#bind-address            = {{ hostvars['mysqlmaster']['ansible_host'] }}
+bind-address             = 0.0.0.0
 #
 # * Fine Tuning
 #

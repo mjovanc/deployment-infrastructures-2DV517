@@ -1,16 +1,4 @@
 ---
-
-  # Configuration based on resource:
-  # https://www.digitalocean.com/community/tutorials/how-to-use-ansible-to-install-and-set-up-wordpress-with-lamp-on-ubuntu-18-04
-
-  - name: Install MySQL
-    apt:
-      name:
-        - mysql-server
-        - python3-pymysql
-      state: latest
-    tags: [ system ]
-
   - name: Set root password
     mysql_user:
       name: root
@@ -53,24 +41,17 @@
       login_user: root
       login_password: "{{ mysql_root_password }}"
     tags: [ mysql ]
-  
-  - name: Allow remote connections to MySQL
-    template:
-      src: "files/mysqld.cnf"
-      dest: "/etc/mysql/mysql.conf.d/mysqld.cnf"
-    notify: Restart MySQL
-    tags: [ mysql ]
 
-  - name: Create a ext4 filesystem on /dev/sdb unless it exists
-    filesystem:
-      fstype: ext4
-      dev: /dev/sdb
-    tags: [ volume, mysql ]
+#  - name: Create a ext4 filesystem on /dev/sdb unless it exists
+#    filesystem:
+#      fstype: ext4
+#      dev: /dev/sdb
+#    tags: [ volume, mysql ]
 
-  - name: Mount volume
-    mount:
-      path: /var/lib/mysql
-      src: /dev/sdb
-      fstype: ext4
-      state: mounted
-    tags: [ volume, mysql ]
+#  - name: Mount volume
+#    mount:
+#      path: /var/lib/mysql
+#      src: /dev/sdb
+#      fstype: ext4
+#      state: mounted
+#    tags: [ volume, mysql ]
