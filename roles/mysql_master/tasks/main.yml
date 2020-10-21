@@ -2,7 +2,7 @@
   - name: MySQL master
     become: yes
     apt:
-      name: [mysql-server, mysql-client]
+      name: [mysql-server, mysql-client, python3-pymysql]
       state: latest
 
   - name: Copy a MySQL master .conf file into place, backing up the original if it differs from the copied version
