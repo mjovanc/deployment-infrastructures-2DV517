@@ -32,7 +32,7 @@ define('DB_USER', '{{ mysql_user }}');
 define('DB_PASSWORD', '{{ mysql_password }}');
 
 /** MySQL hostname */
-define('DB_HOST', '{{ hostvars["mysql"]["ansible_host"] }}');
+define('DB_HOST', '{{ hostvars["mysqlmaster"]["ansible_host"] }}');
 
 /** Database Charset to use in creating database tables. */
 define('DB_CHARSET', 'utf8');
