@@ -1,0 +1,41 @@
+---
+- name: Set up prometheus
+  hosts: monitor
+  become: yes
+  # TODO: THE KEY FILE SHOULD BE CHANGED WHEN INTEGRATING
+  # -----------------------------------------------------
+  vars:
+    ansible_ssh_private_key_file: "{{ key1 }}"
+  # -----------------------------------------------------
+  remote_user: ubuntu
+  tasks:
+    - name: Create prometheus user
+      # USING SHELL MODULE FOR FLAGS, MAKES SURE YOU CANT LOGIN TO SERVER AS "PROMETHEUS" USER
+      shell: useradd --no-create-hom --shell /bin/false prometheus
+    #  user:
+    #    name: prometheus
+    #    comment: Prometheus user
+    #    uid: 1040
+    #    group: prometheus
+    - name: Create etc/prometheus directory
+      file:
+        path: /etc/prometheus
+        state: directory
+        owner: prometheus
+        group: prometheus
+    - name: Create /var/lib/prometheus directory
+      file:
+        path: /var/lib/prometheus
+        state: directory
+        owner: prometheus
+        group: prometheus
+    - name: Make sure user is in home directory
+      command: bash -lc "cd {{ home_dir }}"
+    - name: Get prometheus package
+      get_url:
+        url: https://github.com/prometheus/prometheus/releases/download/v{{ prometheus_version }}/prometheus-{{ prometheus_version }}.linux-amd64.tar.gz
+        dest: "{{ home_dir }}"
+        checksum: sha256:b9894d2bf7fae235c924c7dadda0fbc214ffc18a2bb3e9306f6fbecb589d5263
+    - name: Unpack prometheus package
+      unarchive: prometheus-{{ prometheus_version }}.linux-amd64.tar.gz
+        dest: "{{ home_dir }}"
