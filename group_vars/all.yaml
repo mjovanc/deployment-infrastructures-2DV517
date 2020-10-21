@@ -14,7 +14,6 @@ wp_host: "194.47.177.7"
 wp_conf: "194.47.177.7.conf"
 wp_port: "80"
 
-
 wp_home: "http://194.47.177.7/"
 wp_siteurl: "http://194.47.177.7/"
 
@@ -27,3 +26,9 @@ mysql_master_file: ""
 mysql_master_position: ""
 
 mysql_slave_host: "192.168.20.15" # need to set this automatically before running the role for every slave instance
+
+#Monitor settingsk
+key1: /home/ubuntu/.ssh/monitor-Keypair.pem
+home_dir: /home/ubuntu/
+prometheus_version: 2.22.0
+prometheus: https://github.com/prometheus/prometheus/releases/download/v2.22.0/prometheus-2.22.0.linux-amd64.tar.gz
