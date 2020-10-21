@@ -10,6 +10,12 @@
       pause:
         seconds: 60
   
+    roles: 
+      - openstack_attach_volume
+      vars: 
+        volume_name: WP_MYSQL
+        server_name: mysqlmaster
+  
 #  - name: Common configuration for all hosts
 #    hosts: wordpress:mysql
 #    become: yes
