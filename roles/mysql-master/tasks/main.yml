@@ -28,8 +28,10 @@
       mysql -e "CREATE DATABASE {{ mysql_master_db }};" 
       mysql -e "CREATE USER '{{ mysql_replication_user }}'@'{{ mysql_master_host }}' IDENTIFIED BY '{{ mysql_replication_user_password }}';"
       mysql -e "GRANT REPLICATION SLAVE ON *.* TO '{{ mysql_replication_user }} '@'{{ mysql_master_host }}';"
-      mysql -e "GRANT ALL PRIVILEGES ON {{ mysql_master_db }}.* TO '{{ mysql_replication_user }}'@'{{ mysql_master_host }}';"
+      mysql -e "GRANT ALL ON {{ mysql_master_db }}.* TO '{{ mysql_replication_user }}'@'{{ mysql_master_host }}';"
       mysql -e "FLUSH PRIVILEGES;"
+      mysql -e "USE {{ mysql_master_db }};"
+      mysql -e "FLUSH TABLES WITH READ LOCK;"
     
   - name: Get MySQL master filename
     shell: mysql -e "SHOW MASTER STATUS" -s | tail -n 1 | awk {'print $1'}

@@ -21,6 +21,7 @@ pid-file      = /var/run/mysqld/mysqld.pid
 socket        = /var/run/mysqld/mysqld.sock
 port          = 3306
 datadir       = /var/lib/mysql
+replicate_do_db            = mysql_master
 
 
 # If MySQL is running as a replication slave, this should be
@@ -29,7 +30,7 @@ datadir       = /var/lib/mysql
 #
 # Instead of skip-networking the default is now to listen only on
 # localhost which is more compatible and is not less secure.
-bind-address            = 0.0.0.0
+bind-address            = 192.168.20.15
 #
 # * Fine Tuning
 #
