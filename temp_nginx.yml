@@ -1,0 +1,10 @@
+---
+- name: Create instance for nginx
+  hosts: localhost
+  roles:
+    - openstack_nginx_create_instance
+    
+- name: Install nginx
+  hosts: nginx
+  roles:
+    - openstack_nginx_install

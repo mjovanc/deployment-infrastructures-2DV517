@@ -1,0 +1,58 @@
+---
+- name: Ubuntu update 
+  become: yes   
+  apt:
+    update_cache: yes 
+
+- name: Install Ansible #Maybe install Ansible with pip3 instead?
+  become: yes
+  apt:
+    name: ansible
+    state: latest
+    
+- name: Install pip3
+  become: yes
+  apt:
+    name: python3-pip
+    state: latest
+    
+- name: Install Openstack SDK
+  become: yes
+  shell:
+    pip3 install openstacksdk   
+
+- name: Copy clouds.yaml to control node
+  become: yes
+  copy:
+    src: clouds.yaml
+    dest: "{{ path_home }}/clouds.yaml"
+  
+- name: Generate new SSH keypair on openstack
+  os_keypair:
+    name: "{{ new_ssh_keyname }}"
+  register: keypair
+
+- name: Create private key
+  copy:
+    content: "{{ keypair.key.private_key }}"
+    dest: "{{ path_home }}/.ssh/{{ keypair.key.name }}"
+    mode: '400' 
+    
+- name: Clone project repo from github
+  git:
+    repo: https://github.com/mjovanc/deployment-infrastructures-2DV517.git
+    dest: "{{ path_home_ansible }}"
+
+- name: Copy clouds.yml to repo
+  become: yes
+  copy:
+    remote_src: true
+    src: "{{ path_home }}/clouds.yaml"
+    dest: "{{ path_home_ansible }}/clouds.yaml"
+
+- name: Remove clouds.yaml from home
+  become: yes
+  file:
+    path: "{{ path_home }}/clouds.yaml"
+    state: absent
+  

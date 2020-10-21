@@ -1,20 +1,32 @@
 ---
+  - name: Create instances
+    hosts: localhost
+
+    roles:
+      - openstack_wordpress_create_instance
+      - openstack_mysql_create_instance
+
+    tasks:
+    - name: Wait for interface to attach
+      pause:
+        seconds: 60
+  
   - name: Common configuration for all hosts
-    hosts: all
+    hosts: wordpress:mysql
     become: yes
 
     roles:
       - common
 
   - name: Configure Wordpress frontend
-    hosts: wp_frontend
+    hosts: wordpress
     become: yes
   
     roles:
       - wp_frontend
 
   - name: Configure Wordpress database
-    hosts: wp_db
+    hosts: mysql
     become: yes
     
     roles:

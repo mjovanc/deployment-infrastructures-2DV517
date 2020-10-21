@@ -1,0 +1,18 @@
+<VirtualHost *:{{ wp_port }}>
+
+   ServerAdmin webmaster@localhost
+   ServerName {{ hostvars['wordpress']['ansible_host'] }}
+   ServerAlias www.{{ hostvars['wordpress']['ansible_host'] }}
+   DocumentRoot /var/www/{{ hostvars['wordpress']['ansible_host'] }}/wordpress
+   ErrorLog ${APACHE_LOG_DIR}/error.log
+   CustomLog ${APACHE_LOG_DIR}/access.log combined
+
+   <Directory /var/www/{{ hostvars['wordpress']['ansible_host'] }}>
+         Options -Indexes
+   </Directory>
+
+   <IfModule mod_dir.c>
+       DirectoryIndex index.php index.html index.cgi index.pl  index.xhtml index.htm
+   </IfModule>
+
+</VirtualHost>
