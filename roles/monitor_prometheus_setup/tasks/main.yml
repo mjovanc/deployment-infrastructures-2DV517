@@ -1,6 +1,6 @@
 ---
 - name: Set up prometheus
-  hosts: monitor
+  hosts: local
   become: yes
   # TODO: THE KEY FILE SHOULD BE CHANGED WHEN INTEGRATING
   # -----------------------------------------------------
@@ -9,33 +9,105 @@
   # -----------------------------------------------------
   remote_user: ubuntu
   tasks:
-    - name: Create prometheus user
-      # USING SHELL MODULE FOR FLAGS, MAKES SURE YOU CANT LOGIN TO SERVER AS "PROMETHEUS" USER
-      shell: useradd --no-create-hom --shell /bin/false prometheus
-    #  user:
-    #    name: prometheus
-    #    comment: Prometheus user
-    #    uid: 1040
-    #    group: prometheus
     - name: Create etc/prometheus directory
       file:
         path: /etc/prometheus
         state: directory
-        owner: prometheus
-        group: prometheus
+        owner: ubuntu
+        group: ubuntu
+
     - name: Create /var/lib/prometheus directory
       file:
         path: /var/lib/prometheus
         state: directory
-        owner: prometheus
-        group: prometheus
+        owner: ubuntu
+        group: ubuntu
+
     - name: Make sure user is in home directory
       command: bash -lc "cd {{ home_dir }}"
+
     - name: Get prometheus package
       get_url:
         url: https://github.com/prometheus/prometheus/releases/download/v{{ prometheus_version }}/prometheus-{{ prometheus_version }}.linux-amd64.tar.gz
         dest: "{{ home_dir }}"
         checksum: sha256:b9894d2bf7fae235c924c7dadda0fbc214ffc18a2bb3e9306f6fbecb589d5263
+        remote_src: true
+
+    # FIX THIS TASK BY INSERTING {{}} VARIABLES
     - name: Unpack prometheus package
-      unarchive: prometheus-{{ prometheus_version }}.linux-amd64.tar.gz
+      unarchive:
+        src: "prometheus-{{ prometheus_version }}.linux-amd64.tar.gz"
         dest: "{{ home_dir }}"
+        owner: ubuntu
+        group: ubuntu
+        remote_src: yes
+
+    - name: Move prometehus binary
+      copy:
+        src: prometheus-{{ prometheus_version }}.linux-amd64/prometheus
+        dest: /usr/local/bin
+        owner: ubuntu
+        group: ubuntu
+        remote_src: yes
+        mode: +x
+
+    - name: Move promtool binary
+      copy:
+        src: prometheus-{{ prometheus_version }}.linux-amd64/promtool
+        dest: /usr/local/bin/
+        owner: ubuntu
+        group: ubuntu
+        remote_src: yes
+        mode: +x
+
+    - name: Move consoles files to /etc/prometheus
+      copy:
+        src: prometheus-{{ prometheus_version }}.linux-amd64/consoles
+        dest: /etc/prometheus
+        owner: ubuntu
+        group: ubuntu
+        remote_src: yes
+
+    - name: Move promtool console_libraries to /etc/prometheus
+      copy:
+        src: prometheus-{{ prometheus_version }}.linux-amd64/console_libraries
+        dest: /etc/prometheus
+        owner: ubuntu
+        group: ubuntu
+        remote_src: yes
+
+    - name: Remove leftover files
+      shell: rm -rf prometheus-{{ prometheus_version }}.linux-amd64.tar.gz prometheus-{{ prometheus_version }}.linux-amd64
+
+    - name: Write prometheus config file
+      copy:
+        # Switch the src file to accurate src
+        src: /home/ubuntu/monitor_playbooks/configs/prometheus.yml
+        dest: /etc/prometheus/prometheus.yml
+        owner: ubuntu
+        group: ubuntu
+
+    - name: Writing prometheus.service file to systemd
+      copy:
+        # Switch the src file to accurate src
+        src: /home/ubuntu/monitor_playbooks/configs/prometheus.service
+        dest: /etc/systemd/system/prometheus.service
+        owner: ubuntu
+        group: ubuntu
+
+    - name: Make sure user is in bin directory
+      command: bash -lc "cd /usr/local/bin/"
+
+    - name: Reloading systemctl daemon
+      systemd:
+        daemon_reload: yes
+
+    - name: Starting prometheus.service
+      systemd:
+        state: started
+        name: prometheus
+
+    - name: Enabling prometheus.service to start on boot
+      systemd:
+        enabled: yes
+        name: prometheus

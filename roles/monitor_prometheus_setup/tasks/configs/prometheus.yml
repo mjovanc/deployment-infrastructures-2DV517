@@ -1,0 +1,10 @@
+---
+global:
+  scrape_interval: 15s
+
+scrape_configs:
+  - job_name: "prometheus"
+    scrape_interval: 5s
+    static_configs:
+      # Switch targets to the ones you want to monitor, also make sure node_exporter is installed on them.
+      - targets: ["194.47.177.18:9090"]
