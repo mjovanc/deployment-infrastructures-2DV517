@@ -25,9 +25,9 @@
   - name: Create MySQL user for master
     become: true
     shell: |
-      mysql -u root -e "CREATE USER '{{ mysql_replication_user }}'@'{{ mysql_slave_host }}' IDENTIFIED BY '{{ mysql_replication_user_password }}';"
-      mysql -u root -e "ALTER USER '{{ mysql_replication_user }}'@'{{ mysql_slave_host }}' IDENTIFIED WITH mysql_native_password BY '{{ mysql_replication_user_password }}';"
-      mysql -u root -e "GRANT REPLICATION SLAVE ON *.* TO '{{ mysql_replication_user }}'@'{{ mysql_slave_host }}';"
+      mysql -u root -e "CREATE USER '{{ mysql_replication_user }}'@'{{ hostvars['mysqlslave']['ansible_host'] }}' IDENTIFIED BY '{{ mysql_replication_user_password }}';"
+      mysql -u root -e "ALTER USER '{{ mysql_replication_user }}'@'{{ hostvars['mysqlslave']['ansible_host'] }}' IDENTIFIED WITH mysql_native_password BY '{{ mysql_replication_user_password }}';"
+      mysql -u root -e "GRANT REPLICATION SLAVE ON *.* TO '{{ mysql_replication_user }}'@'{{ hostvars['mysqlslave']['ansible_host'] }}';"
     
   - name: Get MySQL master filename
     shell: mysql -e "SHOW MASTER STATUS" -s | tail -n 1 | awk {'print $1'}
