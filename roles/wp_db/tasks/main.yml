@@ -42,16 +42,16 @@
       login_password: "{{ mysql_root_password }}"
     tags: [ mysql ]
 
-#  - name: Create a ext4 filesystem on /dev/sdb unless it exists
-#    filesystem:
-#      fstype: ext4
-#      dev: /dev/sdb
-#    tags: [ volume, mysql ]
+  - name: Create a ext4 filesystem on /dev/sdb unless it exists
+    filesystem:
+      fstype: ext4
+      dev: /dev/sdb
+    tags: [ volume, mysql ]
 
-#  - name: Mount volume
-#    mount:
-#      path: /var/lib/mysql
-#      src: /dev/sdb
-#      fstype: ext4
-#      state: mounted
-#    tags: [ volume, mysql ]
+  - name: Mount volume
+    mount:
+      path: /var/lib/mysql
+      src: /dev/sdb
+      fstype: ext4
+      state: mounted
+    tags: [ volume, mysql ]
