@@ -27,10 +27,9 @@ mysql_master_position: ""
 
 mysql_slave_host: "192.168.20.15" # need to set this automatically before running the role for every slave instance
 
-#Monitor settingsk
+#Monitor settings
 key1: /home/ubuntu/.ssh/monitor-Keypair.pem
 home_dir: /home/ubuntu/
 prometheus_version: 2.22.0 # Change verision will impact global installation.
 monitor_ip: 194.47.177.18 # Change this IP to the server responsible for monitoring.
-
-node_exporter_version: 0.15.1
+node_exporter_version: 0.15.1 # Change verision will impact global installation.
