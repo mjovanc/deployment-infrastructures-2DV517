@@ -1,0 +1,33 @@
+---
+  - name: Install NGINX
+    become: yes
+    apt:
+      name: [nginx]
+      state: latest
+
+  - name: Create directory for storing WordPress upload files
+    become: yes
+    shell: mkdir -p /var/www/wp
+
+  - name: Adding configuration file for NGINX
+    become: yes
+    template:
+      src: files/wp.j2
+      dest: /etc/nginx/sites-enabled/wp
+      owner: root
+      group: root
+      mode: 0644
+      backup: yes
+
+  - name: Remove default configuration of NGINX
+    become: yes
+    shell: |
+      rm -rf /etc/nginx/sites-enabled/default
+      rm -rf /var/www/html
+
+  - name: Restart NGINX
+    become: yes
+    service:
+      name: nginx
+      state: restarted
+      enabled: yes

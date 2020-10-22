@@ -8,7 +8,7 @@
     - name: Wait for interface to attach
       pause:
         seconds: 60
-  
+
 #  - name: Common configuration for all hosts
 #    hosts: wordpress:mysql
 #    become: yes

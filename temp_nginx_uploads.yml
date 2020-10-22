@@ -1,0 +1,10 @@
+---
+  - name: Set up NGINX uploads instance
+    hosts: localhost
+    roles:
+      - nginx_wpuploads_create
+
+  - name: Configure NGINX uploads instance
+    hosts: nginx_wpuploads
+    roles:
+      - nginx_wpuploads_install
