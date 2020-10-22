@@ -16,3 +16,4 @@
     name: "{{ instance_name }}"
     ansible_host: "{{ instance.openstack.private_v4 }}"
     ansible_user: ubuntu
+    ansible_host: "{{ instance.openstack.accessIPv4 }}"

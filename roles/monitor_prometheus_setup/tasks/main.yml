@@ -5,7 +5,7 @@
     path: /etc/prometheus
     state: directory
     owner: ubuntu
-    group: ubunt
+    group: ubuntu
 
 - name: Create /var/lib/prometheus directory
   become: yes
@@ -13,18 +13,18 @@
     path: /var/lib/prometheus
     state: directory
     owner: ubuntu
-    group: ubunt
+    group: ubuntu
 
 - name: Make sure user is in home directory
   become: yes
-  command: bash -lc "cd {{ home_dir }}
+  command: bash -lc "cd {{ home_dir }}"
 
 - name: Get prometheus package
   get_url:
     url: https://github.com/prometheus/prometheus/releases/download/v{{ prometheus_version }}/prometheus-{{ prometheus_version }}.linux-amd64.tar.gz
     dest: "{{ home_dir }}"
     checksum: sha256:b9894d2bf7fae235c924c7dadda0fbc214ffc18a2bb3e9306f6fbecb589d5263
-    remote_src: tru
+    remote_src: true
 
 # FIX THIS TASK BY INSERTING {{}} VARIABLES
 - name: Unpack prometheus package
@@ -34,7 +34,7 @@
     dest: "{{ home_dir }}"
     owner: ubuntu
     group: ubuntu
-    remote_src: ye
+    remote_src: yes
 
 - name: Move prometehus binary
   become: yes
@@ -44,7 +44,7 @@
     owner: ubuntu
     group: ubuntu
     remote_src: yes
-    mode: +
+    mode: +x
 
 - name: Move promtool binary
   become: yes
@@ -54,7 +54,7 @@
     owner: ubuntu
     group: ubuntu
     remote_src: yes
-    mode: +
+    mode: +x
 
 - name: Move consoles files to /etc/prometheus
   become: yes
@@ -63,7 +63,7 @@
     dest: /etc/prometheus
     owner: ubuntu
     group: ubuntu
-    remote_src: ye
+    remote_src: yes
 
 - name: Move promtool console_libraries to /etc/prometheus
   become: yes
@@ -72,11 +72,11 @@
     dest: /etc/prometheus
     owner: ubuntu
     group: ubuntu
-    remote_src: ye
+    remote_src: yes
 
 - name: Remove leftover files
   become: yes
-  shell: rm -rf prometheus-{{ prometheus_version }}.linux-amd64.tar.gz prometheus-{{ prometheus_version }}.linux-amd6
+  shell: rm -rf prometheus-{{ prometheus_version }}.linux-amd64.tar.gz prometheus-{{ prometheus_version }}.linux-amd64
 
 - name: Write prometheus config file
   become: yes
@@ -85,34 +85,34 @@
     src: prometheus.yml.j2
     dest: /etc/prometheus/prometheus.yml
     owner: ubuntu
-    group: ubunt
+    group: ubuntu
 
 - name: Writing prometheus.service file to systemd
   become: yes
   copy:
     # Switch the src file to accurate src
-    src: /home/ubuntu/monitor_playbooks/configs/prometheus.service
+    src: prometheus.service
     dest: /etc/systemd/system/prometheus.service
     owner: ubuntu
-    group: ubunt
+    group: ubuntu
 
 - name: Make sure user is in bin directory
   become: yes
-  command: bash -lc "cd /usr/local/bin/
+  command: bash -lc "cd /usr/local/bin/"
 
 - name: Reloading systemctl daemon
   become: yes
   systemd:
-    daemon_reload: ye
+    daemon_reload: yes
 
 - name: Starting prometheus.service
   become: yes
   systemd:
     state: started
-    name: prometheu
+    name: prometheus
 
 - name: Enabling prometheus.service to start on boot
   become: yes
   systemd:
     enabled: yes
-    name: prometheu
+    name: prometheus

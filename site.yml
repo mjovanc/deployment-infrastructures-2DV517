@@ -24,6 +24,14 @@
       vars:
         security_group_name: MySQL
         security_group_port: 3306
+    - role: security_groups_openstack_create
+      vars:
+        security_group_name: Monitor
+        security_group_port: 9100
+    - role: security_groups_openstack_create
+      vars:
+        security_group_name: Grafana
+        security_group_port: 3000    
 
   tasks:  
     - name: Wait for security groups
