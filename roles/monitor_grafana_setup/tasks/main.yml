@@ -1,37 +1,37 @@
 ---
-- name: Setup grafana service
-  hosts: local
+# ----------------- Downloading required packages -----------------
+- name: Downloading apt-transport-https
   become: yes
-  # TODO: THE KEY FILE SHOULD BE CHANGED WHEN INTEGRATING
-  # -----------------------------------------------------
-  vars:
-    ansible_ssh_private_key_file: "{{ key1 }}"
-  # -----------------------------------------------------
-  remote_user: ubuntu
-  tasks:
-    # ----------------- Downloading required packages -----------------
-    - name: Downloading apt-transport-https
-      shell: apt-get install -y apt-transport-https
-    - name: Downloading software-properties-common
-      shell: apt-get install -y software-properties-common wget
-    - name: Wget grafana package
-      shell: wget -q -O - https://packages.grafana.com/gpg.key | sudo apt-key add -
+  shell: apt-get install -y apt-transport-https
 
-    # ----------------- Use tee command on grafana.list NECESSARY FOR GRAFANA-ENTERPRISE -----------------
-    - name: Tee list source of Grafana
-      shell: echo "deb https://packages.grafana.com/enterprise/deb stable main" | sudo tee -a /etc/apt/sources.list.d/grafana.list
+- name: Downloading software-properties-common
+  become: yes
+  shell: apt-get install -y software-properties-common wget
 
-    # ----------------- Updating -----------------
-    - name: Update server
-      apt:
-        update_cache: yes
-    - name: Download Grafana package
-      apt:
-        name: grafana-enterprise
-        state: latest
+- name: Wget grafana package
+  become: yes
+  shell: wget -q -O - https://packages.grafana.com/gpg.key | sudo apt-key add -
 
-    # ----------------- Starting built-in grafana systemd service (will start grafana-server) -----------------
-    - name: Start Grafana server
-      systemd:
-        state: started
-        name: grafana-server
+# ----------------- Use tee command on grafana.list NECESSARY FOR GRAFANA-ENTERPRISE -----------------
+- name: Tee list source of Grafana
+  become: yes
+  shell: echo "deb https://packages.grafana.com/enterprise/deb stable main" | sudo tee -a /etc/apt/sources.list.d/grafana.list
+
+# ----------------- Updating -----------------
+- name: Update server
+  become: yes
+  apt:
+    update_cache: yes
+
+- name: Download Grafana package
+  become: yes
+  apt:
+    name: grafana-enterprise
+    state: latest
+
+# ----------------- Starting built-in grafana systemd service (will start grafana-server) -----------------
+- name: Start Grafana server
+  become: yes
+  systemd:
+    state: started
+    name: grafana-server

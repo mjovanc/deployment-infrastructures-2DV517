@@ -1,0 +1,15 @@
+---
+global:
+  scrape_interval: 15s
+
+scrape_configs:
+  - job_name: "prometheus"
+    scrape_interval: 5s
+    static_configs:
+      # Switch targets to the ones you want to monitor, also make sure node_exporter is installed on them.
+      - targets: ["{{ hostvars['prometheus']['public_host'] }}:9090"] # this should be the monitor service
+  - job_name: "node_exporter"
+    scrape_interval: 5s
+    static_configs:
+      # Switch targets to the ones you want to monitor, also make sure node_exporter is installed on them.
+      - targets: ["{{ hostvars['wordpress1']['ansible_host'] }}:9100"] # these should be the servers we want to monitor

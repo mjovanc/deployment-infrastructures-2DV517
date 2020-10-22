@@ -32,6 +32,12 @@
           instance_flavor: c1-r1-d10
           instance_key_name: ansible_key
           instance_security_groups: default,SSH,HTTP
+      - role: instance_private_openstack_create
+        vars:
+          instance_name: prometheus
+          instance_flavor: c1-r1-d10
+          instance_key_name: ansible_key
+          instance_security_groups: default,SSH,HTTP
       - role: openstack_attach_volume
         vars: 
           volume_name: WP_MYSQL
@@ -42,10 +48,16 @@
       pause:
         seconds: 60
 
-  - name: Install node exporter
-    hosts: wordpress1:wordpress2:mysqlmaster:mysqlslave:nginx
-    roles:
-      - role: monitor_node_exporter_setup
+#  - name: Install node exporter
+#    hosts: wordpress1:wordpress2:mysqlmaster:mysqlslave:nginx
+#    roles:
+#      - role: monitor_node_exporter_setup
+
+   - name: Install Prometheus and Grafana
+     hosts: prometheus
+     roles:
+       - monitor_prometheus_setup
+       - monitor_grafana_setup
 
 #  - name: Common configuration for all hosts
 #    hosts: wordpress:mysql
