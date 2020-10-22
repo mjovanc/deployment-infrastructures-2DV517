@@ -53,7 +53,7 @@
           instance_security_groups: default,SSH,HTTP,Grafana,Monitor
       - role: openstack_attach_volume
         vars: 
-          volume_name: WP_MYSQL
+          volume_name: WP_MYSQL_1
           instance_name: mysqlmaster
     tasks:
     - name: Wait for SSH
