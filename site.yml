@@ -8,7 +8,28 @@
     - name: Wait for interface to attach
       pause:
         seconds: 60
-    
+
+- name: Create security groups
+  hosts: localhost
+  roles:
+    - role: openstack_create_security_groups
+      vars:
+        security_group_name: SSH
+        security_group_port: 22
+    - role: openstack_create_security_groups
+      vars:
+        security_group_name: HTTP
+        security_group_port: 80
+    - role: openstack_create_security_groups
+      vars:
+        security_group_name: MySQL
+        security_group_port: 3306
+
+  tasks:  
+    - name: Wait for security groups
+      pause:
+        seconds: 20
+
 - name: Create instance for Ansible
   hosts: localhost
   roles:

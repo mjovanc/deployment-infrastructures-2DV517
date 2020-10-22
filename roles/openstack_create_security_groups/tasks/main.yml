@@ -1,43 +1,17 @@
 ---
-- name: Create security groups on openstack
+- name: Create security group on openstack
   hosts: localhost
 
   tasks:
-    - name: Create a security group for SSH
+    - name: Create a security group
       os_security_group:
-        name: SSH
+        name: {{ security_group_name }}
         state: present
     
-    - name: Add rule to the SSH security group
+    - name: Add rule to security group
       os_security_group_rule:
-        security_group: SSH
+        security_group: {{ security_group_name }}
         protocol: tcp
-        port_range_min: 22
-        port_range_max: 22
-        remote_ip_prefix: 0.0.0.0/0
-        
-    - name: Create a security group for HTTP
-      os_security_group:
-        name: HTTP
-        state: present
-    
-    - name: Add rule to the HTTP security group
-      os_security_group_rule:
-        security_group: HTTP
-        protocol: tcp
-        port_range_min: 80
-        port_range_max: 80
-        remote_ip_prefix: 0.0.0.0/0
-
-    - name: Create a security group for MySQL
-      os_security_group:
-        name: MySQL
-        state: present
-    
-    - name: Add rule to the HTTP security group
-      os_security_group_rule:
-        security_group: MySQL
-        protocol: tcp
-        port_range_min: 3306
-        port_range_max: 3306
+        port_range_min: {{ security_group_port }}
+        port_range_max: {{ security_group_port }}
         remote_ip_prefix: 0.0.0.0/0
