@@ -2,13 +2,34 @@
 - name: Create initial infrastructure on openstack
   hosts: localhost
   roles:
-    - openstack_create_initial_infrastructure
+    - initial_infrastructure_openstack_create
     
   tasks:  
     - name: Wait for interface to attach
       pause:
         seconds: 60
-    
+
+- name: Create security groups
+  hosts: localhost
+  roles:
+    - role: security_groups_openstack_create
+      vars:
+        security_group_name: SSH
+        security_group_port: 22
+    - role: security_groups_openstack_create
+      vars:
+        security_group_name: HTTP
+        security_group_port: 80
+    - role: security_groups_openstack_create
+      vars:
+        security_group_name: MySQL
+        security_group_port: 3306
+
+  tasks:  
+    - name: Wait for security groups
+      pause:
+        seconds: 20
+
 - name: Create instance for Ansible
   hosts: localhost
   roles:
