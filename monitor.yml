@@ -1,3 +1,4 @@
+---
 - name: Install and run prometheus
   hosts: monitor
   roles:
