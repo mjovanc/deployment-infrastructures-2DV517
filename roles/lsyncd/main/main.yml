@@ -1,0 +1,13 @@
+---
+
+  - name: Install lsyncd
+    apt:
+      name: [ lsyncd ]
+      state: latest
+    tags: [ system ]
+
+  - name: Set up lsyncd configuration
+    template:
+      src: "files/lsyncd.conf.j2"
+      dest: "/etc/lsyncd.conf"
+    tags: [ lsyncd ]
