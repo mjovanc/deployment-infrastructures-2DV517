@@ -1,0 +1,15 @@
+---
+- name: Install and run prometheus
+  hosts: monitor
+  roles:
+    - monitor_prometheus_setup
+
+- name: Install and run grafana
+  hosts: monitor
+  roles:
+    - monitor_grafana_setup
+
+- name: Install and run node_exporter to remote hosts
+  hosts: nodes
+  roles:
+    - monitor_node_exporter_setup

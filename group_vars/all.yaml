@@ -13,10 +13,9 @@ mysql_replication_user_password: "mysqlpassword"
 #WP Settings
 wp_port: "80"
 
-#Monitor settingsk
+#Monitor settings
 key1: /home/ubuntu/.ssh/monitor-Keypair.pem
 home_dir: /home/ubuntu/
 prometheus_version: 2.22.0 # Change verision will impact global installation.
 monitor_ip: 194.47.177.18 # Change this IP to the server responsible for monitoring.
-
-node_exporter_version: 0.15.1
+node_exporter_version: 0.15.1 # Change verision will impact global installation.
