@@ -33,7 +33,13 @@
 - name: Create instance for Ansible
   hosts: localhost
   roles:
-    - openstack_ansible_create_instance
+    - role: instance_public_openstack_create
+      vars:
+        instance_name: ansible
+        instance_flavor: c4-r8-d80
+        instance_key_name: cscloud-oh222fv
+        instance_security_groups: default,SSH
+        instance_floating_ip: 194.47.176.254 #Set in group_vars
   
   tasks:  
     - name: Wait for SSH to be ready
@@ -43,4 +49,4 @@
 - name: Install Ansible
   hosts: ansible
   roles:
-    - openstack_ansible_install
+    - ansible_control_node_install

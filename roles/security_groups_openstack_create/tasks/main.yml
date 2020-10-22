@@ -1,17 +1,13 @@
 ---
-- name: Create security group on openstack
-  hosts: localhost
+- name: Create a security group
+  os_security_group:
+    name: "{{ security_group_name }}"
+    state: present
 
-  tasks:
-    - name: Create a security group
-      os_security_group:
-        name: {{ security_group_name }}
-        state: present
-    
-    - name: Add rule to security group
-      os_security_group_rule:
-        security_group: {{ security_group_name }}
-        protocol: tcp
-        port_range_min: {{ security_group_port }}
-        port_range_max: {{ security_group_port }}
-        remote_ip_prefix: 0.0.0.0/0
+- name: Add rule to security group
+  os_security_group_rule:
+    security_group: "{{ security_group_name }}"
+    protocol: tcp
+    port_range_min: "{{ security_group_port }}"
+    port_range_max: "{{ security_group_port }}"
+    remote_ip_prefix: 0.0.0.0/0

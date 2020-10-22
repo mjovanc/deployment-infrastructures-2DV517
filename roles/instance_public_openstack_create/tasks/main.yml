@@ -1,0 +1,19 @@
+---
+- name: Create instance on openstack
+  os_server:
+    state: present
+    name: "{{ instance_name }}"
+    image: Ubuntu server 20.04
+    availability_zone: Education
+    flavor: "{{ instance_flavor }}"
+    key_name: "{{ instance_key_name }}"
+    security_groups: "{{ instance_security_groups }}"
+    floating_ips:
+      - "{{ instance_floating_ip }}"
+  register: instance
+
+- name: Add instance to inventory
+  add_host:
+    name: "{{ instance_name }}"
+    ansible_host: "{{ instance.openstack.accessIPv4 }}"
+    ansible_user: ubuntu
