@@ -53,11 +53,11 @@
 #    roles:
 #      - role: monitor_node_exporter_setup
 
-   - name: Install Prometheus and Grafana
-     hosts: prometheus
-     roles:
-       - monitor_prometheus_setup
-       - monitor_grafana_setup
+#   - name: Install Prometheus and Grafana
+#     hosts: prometheus
+#     roles:
+#       - monitor_prometheus_setup
+#       - monitor_grafana_setup
 
 #  - name: Common configuration for all hosts
 #    hosts: wordpress:mysql
@@ -70,28 +70,28 @@
 #    hosts: mysqlmaster
 #    become: yes
 #    roles:
-#        - mysql_master
+#      - mysql_master_install
 #
 #  - name: Configure MySQL slave database
 #    hosts: mysqlslave
 #    become: yes
 #    roles:
-#        - mysql_slave
+#      - mysql_slave_install
 #
 #  - name: Configure Wordpress configurations on master database
 #    hosts: mysqlmaster
 #    become: yes
 #    roles:
-#        - wp_db
+#      - wordpress_database_setup
 #
 #  - name: Configure Wordpress frontend
 #    hosts: wordpress1:wordpress2
 #    become: yes
 #    roles:
-#      - wp_frontend
+#      - wordpress_install
 #  
 #  - name: Install nginx loadbalancer
 #    hosts: nginx
 #    roles:
-#      - openstack_nginx_install
+#      - nginx_load_balancer_install
 #
