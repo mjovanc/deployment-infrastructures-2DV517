@@ -26,6 +26,12 @@
   copy:
     src: clouds.yaml
     dest: "{{ path_home }}/clouds.yaml"
+
+- name: Copy ansible.cfg to control node
+  become: yes
+  copy:
+    src: ansibles.cfg
+    dest: /etc/ansible/ansible.cfg
   
 - name: Generate new SSH keypair on openstack
   os_keypair:
@@ -55,4 +61,3 @@
   file:
     path: "{{ path_home }}/clouds.yaml"
     state: absent
-  
