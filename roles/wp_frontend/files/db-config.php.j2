@@ -1,10 +1,10 @@
 <?php
 
 $wpdb->add_database(array(
-	'host'     => {{ hostvars['mysqlmaster']['ansible_host'] }},     // If port is other than 3306, use host:port.
-	'user'     => {{ mysql_user }},
-	'password' => {{ mysql_password }},
-	'name'     => {{ mysql_db }},
+	'host'     => '{{ hostvars['mysqlmaster']['ansible_host'] }}',     // If port is other than 3306, use host:port.
+	'user'     => '{{ mysql_user }}',
+	'password' => '{{ mysql_password }}',
+	'name'     => '{{ mysql_db }}',
 	'write'    => 1,
 	'read'     => 0,
 	'dataset'  => 'global',
@@ -12,10 +12,10 @@ $wpdb->add_database(array(
 ));
 
 $wpdb->add_database(array(
-	'host'     => {{ hostvars['mysqlslave']['ansible_host'] }},     // If port is other than 3306, use host:port.
-	'user'     => {{ mysql_user }},
-	'password' => {{ mysql_password }},
-	'name'     => {{ mysql_db }},
+	'host'     => '{{ hostvars['mysqlslave']['ansible_host'] }}',     // If port is other than 3306, use host:port.
+	'user'     => '{{ mysql_user }}',
+	'password' => '{{ mysql_password }}',
+	'name'     => '{{ mysql_db }}',
 	'write'    => 0,
 	'read'     => 1,
 	'dataset'  => 'global',
