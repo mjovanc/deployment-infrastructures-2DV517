@@ -18,6 +18,7 @@
     remote_src: yes
 
 - name: Move node_exporter binary
+  become: yes
   copy:
     src: node_exporter-{{ node_exporter_version }}.linux-amd64/node_exporter
     dest: /usr/local/bin
@@ -30,6 +31,7 @@
   shell: rm -rf node_exporter-{{ node_exporter_version }}.linux-amd64 node_exporter-{{ node_exporter_version }}.linux-amd64.tar.gz
 
 - name: Writing node_exporter.service file to systemd
+  become: yes
   copy:
     # Switch the src file to accurate src
     src: node_exporter.service # CHANGE
@@ -38,18 +40,22 @@
     group: ubuntu
 
 - name: Make sure user is in bin directory
+  become: yes
   command: bash -lc "cd /usr/local/bin/"
 
 - name: Reloading systemctl daemon
+  become: yes
   systemd:
     daemon_reload: yes
 
 - name: Starting node_exporter.service
+  become: yes
   systemd:
     state: started
     name: node_exporter
 
 - name: Enabling node_exporter.service to start on boot
+  become: yes
   systemd:
     enabled: yes
     name: node_exporter
