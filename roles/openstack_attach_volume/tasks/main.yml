@@ -1,8 +1,0 @@
----
-- name: Attach volume to host
-  os_server_volume:
-    server: "{{ instance_name }}"
-    volume: "{{ volume_name }}"
-    device: /dev/sdb
-    state: present
-  tags: [ attach-volume ]

@@ -1,4 +1,0 @@
----
-- name: Create local network
-  os_network:
-    name: "{{network_name}}"
