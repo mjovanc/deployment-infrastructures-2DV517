@@ -2,11 +2,16 @@
   - name: Create instances
     hosts: localhost
     roles:
-      - openstack_wordpress_create_instance
-      - openstack_mysql_create_instances
-      - openstack_nginx_create_instance
+      - role: openstack_wordpress_create_instance
+      - role: openstack_mysql_create_instances
+      - role: openstack_nginx_create_instance
+      - role: openstack_attach_volume
+        vars: 
+          volume_name: WP_MYSQL
+          instance_name: mysqlmaster
+
     tasks:
-    - name: Wait for interface to attach
+    - name: Wait for SSH
       pause:
         seconds: 60
 
@@ -29,19 +34,19 @@
     roles:
         - mysql_slave
 
-  - name: Configure wordpress configurations on master database
+  - name: Configure Wordpress configurations on master database
     hosts: mysqlmaster
     become: yes
     roles:
         - wp_db
 
   - name: Configure Wordpress frontend
-    hosts: wordpress
+    hosts: wordpress1:wordpress2
     become: yes
     roles:
       - wp_frontend
   
-  - name: Install nginx
+  - name: Install nginx loadbalancer
     hosts: nginx
     roles:
       - openstack_nginx_install
