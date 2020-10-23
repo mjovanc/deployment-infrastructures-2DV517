@@ -51,7 +51,7 @@
 
   - name: Allow remote connections to MySQL
     template:
-      src: "files/mysql.conf.d"
+      src: "files/mysqld.cnf"
       dest: "/etc/mysql/mysql.conf.d/mysqld.cnf"
     notify: Restart MySQL
     tags: [ mysql ]
