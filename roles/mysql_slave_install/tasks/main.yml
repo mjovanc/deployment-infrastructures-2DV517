@@ -21,7 +21,12 @@
       name: mysql
       state: restarted
       enabled: yes
-  
+
+  - name: Importing database dump
+    become: true
+    shell: |
+      mysql -p'{{ mysql_root_password }}' < everything.sql
+
   - name: Create MySQL user for slave
     become: true
     shell: |

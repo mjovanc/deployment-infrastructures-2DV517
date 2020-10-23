@@ -4,6 +4,14 @@
     apt:
       name: [mysql-server, mysql-client, python3-pymysql]
       state: latest
+  
+  - name: Copy SSH key to host
+    become: yes
+    copy:
+      src: /home/ubuntu/.ssh/ansible_key
+      dest: /home/ubuntu/ansible_key
+      owner: ubuntu
+      group: ubuntu
 
   - name: Copy a MySQL master .conf file into place, backing up the original if it differs from the copied version
     become: yes
@@ -45,3 +53,8 @@
       ansible_mysql_filename: "{{ filename.stdout }}"
       ansible_mysql_position: "{{ position.stdout }}"
 
+  - name: Create MySQL user for master
+    become: true
+    shell: |
+      mysqldump --all-databases --user=root --password='{{ mysql_root_password }}' --master-data > everything.sql
+      scp -i ansible-key everything.sql ubuntu@'{{ hostvars['mysqlslave']['ansible_host'] }}':/home/ubuntu

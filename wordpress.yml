@@ -82,23 +82,24 @@
 #    roles:
 #      - common
 #
-#  - name: Configure MySQL master database
-#    hosts: mysqlmaster
-#    become: yes
-#    roles:
-#      - mysql_master_install
-#
-#  - name: Configure MySQL slave database
-#    hosts: mysqlslave
-#    become: yes
-#    roles:
-#      - mysql_slave_install
-
   - name: Configure Wordpress configurations on master database
     hosts: mysqlmaster
     become: yes
     roles:
       - wordpress_database_setup
+
+  - name: Configure MySQL master database
+    hosts: mysqlmaster
+    become: yes
+    roles:
+      - mysql_master_install
+
+  - name: Configure MySQL slave database
+    hosts: mysqlslave
+    become: yes
+    roles:
+      - mysql_slave_install
+
 #
 #  - name: Configure Wordpress frontend
 #    hosts: wordpress1:wordpress2
