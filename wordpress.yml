@@ -57,8 +57,8 @@
           instance_name: mysqlmaster
       - role: openstack_attach_volume
         vars: 
-          volume_name: WP_MYSQL_1
-          instance_name: WP_CONTENT
+          volume_name: WP_CONTENT
+          instance_name: nginx_wpuploads
     tasks:
     - name: Wait for SSH
       pause:
