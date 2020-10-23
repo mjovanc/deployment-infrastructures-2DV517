@@ -2,6 +2,12 @@
 global:
   scrape_interval: 15s
 
+alerting:
+  alertmanagers:
+  - static_configs:
+    - targets:
+      - "{{ hostvars['prometheus']['public_host'] }}:9093"
+
 scrape_configs:
   - job_name: "prometheus"
     scrape_interval: 5s
