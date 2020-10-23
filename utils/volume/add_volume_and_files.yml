@@ -26,3 +26,4 @@
       synchronize:
         src: ./volume_files
         dest: /home/ubuntu
+      tags: [ copy ]
