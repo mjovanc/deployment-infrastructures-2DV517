@@ -50,7 +50,7 @@
 
   - name: Mount volume
     mount:
-      path: /var/lib/mysql
+      path: /var/lib/mysql/wp
       src: /dev/sdb
       fstype: ext4
       state: mounted
