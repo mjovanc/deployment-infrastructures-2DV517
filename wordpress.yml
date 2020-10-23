@@ -75,13 +75,13 @@
 #    hosts: nginx_wpuploads
 #    roles:
 #     - nginx_wpuploads_install
-#     
-#  - name: Common configuration for all hosts
-#    hosts: wordpress:mysql
-#    become: yes
-#    roles:
-#      - common
-#
+
+  - name: Configure Wordpress frontend
+    hosts: wordpress1:wordpress2
+    become: yes
+    roles:
+      - wordpress_install
+
   - name: Configure Wordpress configurations on master database
     hosts: mysqlmaster
     become: yes
@@ -99,16 +99,8 @@
     become: yes
     roles:
       - mysql_slave_install
-
-#
-#  - name: Configure Wordpress frontend
-#    hosts: wordpress1:wordpress2
-#    become: yes
-#    roles:
-#      - wordpress_install
-#  
-#  - name: Install nginx loadbalancer
-#    hosts: nginx
-#    roles:
-#      - nginx_load_balancer_install
-#
+  
+  - name: Install nginx loadbalancer
+    hosts: nginx
+    roles:
+      - nginx_load_balancer_install

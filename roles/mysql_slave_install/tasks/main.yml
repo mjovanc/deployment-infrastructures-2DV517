@@ -23,15 +23,22 @@
       enabled: yes
 
   - name: Importing database dump
-    become: true
+    become: yes
     shell: |
+      mysql -u root -p'{{ mysql_root_password }}' -e "STOP SLAVE;"
       mysql -p'{{ mysql_root_password }}' < everything.sql
+      mysql -u root -p'{{ mysql_root_password }}' -e "START SLAVE;"
 
   - name: Create MySQL user for slave
-    become: true
+    become: yes
     shell: |
       mysql -u root -p'{{ mysql_root_password }}' -e "STOP SLAVE;"
       mysql -u root -p'{{ mysql_root_password }}' -e "CHANGE MASTER TO MASTER_HOST='{{ hostvars['mysqlmaster']['ansible_host'] }}', MASTER_USER='{{ mysql_replication_user }}', MASTER_PASSWORD='{{ mysql_replication_user_password }}', MASTER_LOG_FILE='{{ hostvars['mysql_master_fileposition']['ansible_mysql_filename'] }}', MASTER_LOG_POS={{ hostvars['mysql_master_fileposition']['ansible_mysql_position'] }};"
       mysql -u root -p'{{ mysql_root_password }}' -e "START SLAVE;"
     
-  
+  - name: Restarting MySQL
+    become: yes
+    service:
+      name: mysql
+      state: restarted
+      enabled: yes 

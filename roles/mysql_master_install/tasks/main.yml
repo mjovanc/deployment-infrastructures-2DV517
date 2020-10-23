@@ -12,6 +12,7 @@
       dest: /home/ubuntu/ansible_key
       owner: ubuntu
       group: ubuntu
+      mode: 0400
 
   - name: Copy a MySQL master .conf file into place, backing up the original if it differs from the copied version
     become: yes
@@ -38,12 +39,12 @@
       mysql -u root -p'{{ mysql_root_password }}' -e "GRANT REPLICATION SLAVE ON *.* TO '{{ mysql_replication_user }}'@'{{ hostvars['mysqlslave']['ansible_host'] }}';"
     
   - name: Get MySQL master filename
-    shell: mysql -e "SHOW MASTER STATUS" -s | tail -n 1 | awk {'print $1'}
+    shell: mysql -u root -p'{{ mysql_root_password }}' -e "SHOW MASTER STATUS" -s | tail -n 1 | awk {'print $1'}
     register: filename
     become: true
 
   - name: Get MySQL master position
-    shell: mysql -e "SHOW MASTER STATUS" -s | tail -n 1 | awk {'print $2'}
+    shell: mysql -u root -p'{{ mysql_root_password }}' -e "SHOW MASTER STATUS" -s | tail -n 1 | awk {'print $2'}
     register: position
     become: true
 
@@ -53,8 +54,8 @@
       ansible_mysql_filename: "{{ filename.stdout }}"
       ansible_mysql_position: "{{ position.stdout }}"
 
-  - name: Create MySQL user for master
+  - name: Send the database to slave
     become: true
     shell: |
       mysqldump --all-databases --user=root --password='{{ mysql_root_password }}' --master-data > everything.sql
-      scp -i ansible-key everything.sql ubuntu@'{{ hostvars['mysqlslave']['ansible_host'] }}':/home/ubuntu
+      scp -i ansible_key -o StrictHostKeyChecking=accept-new everything.sql ubuntu@'{{ hostvars['mysqlslave']['ansible_host'] }}':/home/ubuntu
