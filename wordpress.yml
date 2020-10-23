@@ -60,27 +60,33 @@
       pause:
         seconds: 60
 
-  - name: Install node exporter
-    hosts: wordpress1:wordpress2:mysqlmaster:mysqlslave:nginx
-    roles:
-      - role: monitor_node_exporter_setup
-
-  - name: Install Prometheus and Grafana
-    hosts: prometheus
-    roles:
-      - monitor_prometheus_setup
-      - monitor_grafana_setup
-
-  - name: Install nginx fileserver
-    hosts: nginx_wpuploads
-    roles:
-     - nginx_wpuploads_install
-     
-#  - name: Common configuration for all hosts
-#    hosts: wordpress:mysql
-#    become: yes
+#  - name: Install node exporter
+#    hosts: wordpress1:wordpress2:mysqlmaster:mysqlslave:nginx
 #    roles:
-#      - common
+#      - role: monitor_node_exporter_setup
+#
+#  - name: Install Prometheus and Grafana
+#    hosts: prometheus
+#    roles:
+#      - monitor_prometheus_setup
+#      - monitor_grafana_setup
+#
+#  - name: Install nginx fileserver
+#    hosts: nginx_wpuploads
+#    roles:
+#     - nginx_wpuploads_install
+
+  - name: Configure Wordpress frontend
+    hosts: wordpress1:wordpress2
+    become: yes
+    roles:
+      - wordpress_install
+
+  - name: Configure Wordpress configurations on master database
+    hosts: mysqlmaster
+    become: yes
+    roles:
+      - wordpress_database_setup
 
   - name: Configure MySQL master database
     hosts: mysqlmaster
@@ -93,18 +99,6 @@
     become: yes
     roles:
       - mysql_slave_install
-
-  - name: Configure Wordpress configurations on master database
-    hosts: mysqlmaster
-    become: yes
-    roles:
-      - wordpress_database_setup
-
-  - name: Configure Wordpress frontend
-    hosts: wordpress1:wordpress2
-    become: yes
-    roles:
-      - wordpress_install
   
   - name: Install nginx loadbalancer
     hosts: nginx
