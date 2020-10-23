@@ -1,4 +1,11 @@
 ---
+
+  - name: Install MySQL on master
+    become: yes
+    apt:
+      name: [mysql-server, mysql-client, python3-pymysql]
+      state: latest
+
   - name: Set root password
     mysql_user:
       name: root
@@ -42,6 +49,13 @@
       login_password: "{{ mysql_root_password }}"
     tags: [ mysql ]
 
+  - name: Allow remote connections to MySQL
+    template:
+      src: "files/mysql.conf.d"
+      dest: "/etc/mysql/mysql.conf.d/mysqld.cnf"
+    notify: Restart MySQL
+    tags: [ mysql ]
+
   - name: Create a ext4 filesystem on /dev/sdb unless it exists
     filesystem:
       fstype: ext4
@@ -55,3 +69,4 @@
       fstype: ext4
       state: mounted
     tags: [ volume, mysql ]
+
