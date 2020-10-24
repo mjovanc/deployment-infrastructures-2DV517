@@ -31,3 +31,18 @@
       name: nginx
       state: restarted
       enabled: yes
+
+  - name: Mount volume
+    mount:
+      path: /var/www/wp
+      src: /dev/sdb
+      fstype: ext4
+      state: mounted
+    tags: [ volume, mysql ]
+  
+  - name: Restart NGINX
+    become: yes
+    service:
+      name: nginx
+      state: restarted
+      enabled: yes
