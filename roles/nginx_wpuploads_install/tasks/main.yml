@@ -24,13 +24,7 @@
     shell: |
       rm -rf /etc/nginx/sites-enabled/default
       rm -rf /var/www/html
-
-  - name: Restart NGINX
-    become: yes
-    service:
-      name: nginx
-      state: restarted
-      enabled: yes
+    notify: Restart NGINX
 
   - name: Create a ext4 filesystem on /dev/sdb unless it exists
     become: yes
@@ -47,3 +41,4 @@
       fstype: ext4
       state: mounted
     tags: [ mount ]
+    notify: Restart NGINX
