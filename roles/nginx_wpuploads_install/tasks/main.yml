@@ -41,3 +41,4 @@
       fstype: ext4
       state: mounted
     tags: [ mount ]
+    notify: Restart NGINX
