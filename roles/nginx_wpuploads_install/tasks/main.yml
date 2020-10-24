@@ -32,17 +32,18 @@
       state: restarted
       enabled: yes
 
+  - name: Create a ext4 filesystem on /dev/sdb unless it exists
+    become: yes
+    filesystem:
+      fstype: ext4
+      dev: /dev/sdb
+    tags: [ mount ]
+  
   - name: Mount volume
+    become: yes
     mount:
       path: /var/www/wp
       src: /dev/sdb
       fstype: ext4
       state: mounted
-    tags: [ volume, mysql ]
-  
-  - name: Restart NGINX
-    become: yes
-    service:
-      name: nginx
-      state: restarted
-      enabled: yes
+    tags: [ mount ]
