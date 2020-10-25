@@ -23,4 +23,3 @@ scrape_configs:
           server {{ hostvars[host]['ansible_host'] }}:9100,
         {% endfor %}
       ]
-# "{{ hostvars['wordpress1']['ansible_host'] }}:9100", "{{ hostvars['wordpress2']['ansible_host'] }}:9100", "{{ hostvars['mysqlmaster']['ansible_host'] }}:9100", "{{ hostvars['mysqlslave']['ansible_host'] }}:9100"] # these should be the servers we want to monitor

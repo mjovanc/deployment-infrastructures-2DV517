@@ -16,29 +16,29 @@
           - name: wordpress1
             auto_ip: no
             security_groups: default,SSH,HTTP,Monitor
-            group_name: wordpress
+            group_name: wordpress, monitor
           - name: wordpress2
             auto_ip: no
             security_groups: default,SSH,HTTP,Monitor
-            group_name: wordpress
+            group_name: wordpress, monitor
           - name: wordpress3
             auto_ip: no
             security_groups: default,SSH,HTTP,Monitor
-            group_name: wordpress
+            group_name: wordpress, monitor
           
           - name: mysqlmaster
             auto_ip: no
             security_groups: default,SSH,MySQL,Monitor
-            group_name: mysql
+            group_name: mysql, monitor
           - name: mysqlslave
             auto_ip: no
             security_groups: default,SSH,MySQL,Monitor
-            group_name: mysql
+            group_name: mysql, monitor
           
           - name: nginx
             auto_ip: yes
             security_groups: default,SSH,HTTP,Monitor
-            group_name: nginx
+            group_name: nginx, monitor
           
           - name: prometheus
             auto_ip: yes
