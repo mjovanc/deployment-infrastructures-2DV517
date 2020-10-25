@@ -18,4 +18,9 @@ scrape_configs:
     scrape_interval: 5s
     static_configs:
       # Switch targets to the ones you want to monitor, also make sure node_exporter is installed on them.
-      - targets: ["{{ hostvars['wordpress1']['ansible_host'] }}:9100", "{{ hostvars['wordpress2']['ansible_host'] }}:9100", "{{ hostvars['mysqlmaster']['ansible_host'] }}:9100", "{{ hostvars['mysqlslave']['ansible_host'] }}:9100"] # these should be the servers we want to monitor
+      - targets: [
+        {% for host in groups['monitor'] %}
+          server {{ hostvars[host]['ansible_host'] }}:9100,
+        {% endfor %}
+      ]
+# "{{ hostvars['wordpress1']['ansible_host'] }}:9100", "{{ hostvars['wordpress2']['ansible_host'] }}:9100", "{{ hostvars['mysqlmaster']['ansible_host'] }}:9100", "{{ hostvars['mysqlslave']['ansible_host'] }}:9100"] # these should be the servers we want to monitor
