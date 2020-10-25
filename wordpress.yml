@@ -9,6 +9,7 @@
           instance_key_name: ansible_key
           instance_auto_ip: no
           instance_security_groups: default,SSH,HTTP,Monitor
+          instance_group_name: wordpress
       - role: instance_private_openstack_create
         vars:
           instance_name: wordpress2
@@ -16,6 +17,7 @@
           instance_key_name: ansible_key
           instance_auto_ip: no
           instance_security_groups: default,SSH,HTTP,Monitor
+          instance_group_name: wordpress
       - role: instance_private_openstack_create
         vars:
           instance_name: mysqlmaster
@@ -57,40 +59,40 @@
       pause:
         seconds: 60
 
-  - name: Install node exporter
-    hosts: wordpress1:wordpress2:mysqlmaster:mysqlslave:nginx
-    roles:
-      - role: monitor_node_exporter_setup
-
-  - name: Install Prometheus and Grafana
-    hosts: prometheus
-    roles:
-      - monitor_prometheus_setup
-      - monitor_grafana_setup
-
-  - name: Configure Wordpress frontend
-    hosts: wordpress1:wordpress2
-    become: yes
-    roles:
-      - wordpress_install
-
-  - name: Configure Wordpress configurations on master database
-    hosts: mysqlmaster
-    become: yes
-    roles:
-      - wordpress_database_setup
-
-  - name: Configure MySQL master database
-    hosts: mysqlmaster
-    become: yes
-    roles:
-      - mysql_master_install
-
-  - name: Configure MySQL slave database
-    hosts: mysqlslave
-    become: yes
-    roles:
-      - mysql_slave_install
+#  - name: Install node exporter
+#    hosts: wordpress1:wordpress2:mysqlmaster:mysqlslave:nginx
+#    roles:
+#      - role: monitor_node_exporter_setup
+#
+#  - name: Install Prometheus and Grafana
+#    hosts: prometheus
+#    roles:
+#      - monitor_prometheus_setup
+#      - monitor_grafana_setup
+#
+#  - name: Configure Wordpress frontend
+#    hosts: wordpress1:wordpress2
+#    become: yes
+#    roles:
+#      - wordpress_install
+#
+#  - name: Configure Wordpress configurations on master database
+#    hosts: mysqlmaster
+#    become: yes
+#    roles:
+#      - wordpress_database_setup
+#
+#  - name: Configure MySQL master database
+#    hosts: mysqlmaster
+#    become: yes
+#    roles:
+#      - mysql_master_install
+#
+#  - name: Configure MySQL slave database
+#    hosts: mysqlslave
+#    become: yes
+#    roles:
+#      - mysql_slave_install
   
   - name: Install nginx loadbalancer
     hosts: nginx
