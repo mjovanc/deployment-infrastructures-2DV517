@@ -47,10 +47,11 @@
       
       - name: Attach openstack volumes
         include_role:
-          name: openstack_attach_volume
+          name: volume_openstack
         vars:
           volume_name: "{{ item.volume_name }}"
           instance_name: "{{ item.name }}"
+          state: present
         loop:
           - name: mysqlmaster
             volume_name: WP_MYSQL_1
