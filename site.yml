@@ -2,8 +2,7 @@
 - name: Create initial infrastructure on openstack
   hosts: localhost
   roles:
-    - initial_infrastructure_openstack_create
-    
+    - initial_infrastructure_openstack_create    
   tasks:  
     - name: Wait for interface to attach
       pause:
@@ -32,7 +31,6 @@
       vars:
         security_group_name: Grafana
         security_group_port: 3000    
-
   tasks:  
     - name: Wait for security groups
       pause:
@@ -45,10 +43,9 @@
       vars:
         instance_name: ansible
         instance_flavor: c4-r8-d80
-        instance_key_name: cscloud-oh222fv
+        instance_key_name: "{{ controle_node_key }}"
         instance_security_groups: default,SSH
-        instance_floating_ip: 194.47.176.254 #Set in group_vars
-  
+        instance_floating_ip: "{{ control_node_ip }}"
   tasks:  
     - name: Wait for SSH to be ready
       pause:

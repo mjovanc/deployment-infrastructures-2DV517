@@ -1,0 +1,2 @@
+node_exporter_version: 0.15.1 # Change verision will impact global installation.
+home_dir: /home/ubuntu/
