@@ -1,5 +1,5 @@
 ---
-- name: "Create {{ instance_name }} on openstack"
+- name: "Create instance {{ instance_name }} on openstack"
   os_server:
     state: present
     name: "{{ instance_name }}"
@@ -11,7 +11,7 @@
     security_groups: "{{ instance_security_groups }}"
   register: instance
 
-- name: "Add {{ instance_name }} to inventory"
+- name: "Add instance {{ instance_name }} to inventory"
   add_host:
     name: "{{ instance_name }}"
     ansible_host: "{{ instance.openstack.private_v4 }}"

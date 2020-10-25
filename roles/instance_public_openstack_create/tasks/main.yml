@@ -1,5 +1,5 @@
 ---
-- name: Create instance on openstack
+- name: "Create instance {{ instance_name }} on openstack"
   os_server:
     state: present
     name: "{{ instance_name }}"
@@ -12,7 +12,7 @@
       - "{{ instance_floating_ip }}"
   register: instance
 
-- name: Add instance to inventory
+- name: "Add instance {{ instance_name }} to inventory"
   add_host:
     name: "{{ instance_name }}"
     ansible_host: "{{ instance.openstack.accessIPv4 }}"
