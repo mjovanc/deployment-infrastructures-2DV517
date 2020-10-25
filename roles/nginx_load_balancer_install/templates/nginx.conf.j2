@@ -1,6 +1,6 @@
 upstream backend {
         {% for host in groups['wordpress'] %}
-          "server {{ hostvars[host]['ansible_host'] }}:80 max_fails=3 fail_timeout=30s;",
+          server {{ hostvars[host]['ansible_host'] }}:80 max_fails=3 fail_timeout=30s;
         {% endfor %}
 }
 
@@ -8,7 +8,7 @@ server {
         listen 80;
         listen [::]:80 ipv6only=on;
 
-        server_name "{{ hostvars['nginx']['public_host'] }}";
+        server_name {{ hostvars['nginx']['public_host'] }};
 
         location / {
                 proxy_pass http://backend;
