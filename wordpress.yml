@@ -25,6 +25,7 @@
           instance_key_name: ansible_key
           instance_auto_ip: no
           instance_security_groups: default,SSH,MySQL,Monitor
+          instance_group_name: mysql
       - role: instance_private_openstack_create
         vars:
           instance_name: mysqlslave
@@ -32,6 +33,7 @@
           instance_key_name: ansible_key
           instance_auto_ip: no
           instance_security_groups: default,SSH,MySQL,Monitor
+          instance_group_name: mysql
       - role: instance_private_openstack_create
         vars:
           instance_name: nginx
@@ -39,6 +41,7 @@
           instance_key_name: ansible_key
           instance_auto_ip: yes
           instance_security_groups: default,SSH,HTTP,Monitor
+          instance_group_name: nginx
       - role: instance_private_openstack_create
         vars:
           instance_name: prometheus
@@ -46,6 +49,7 @@
           instance_key_name: ansible_key
           instance_auto_ip: yes
           instance_security_groups: default,SSH,HTTP,Grafana,Monitor
+          instance_group_name: monitor
       - role: openstack_attach_volume
         vars: 
           volume_name: WP_MYSQL_1
