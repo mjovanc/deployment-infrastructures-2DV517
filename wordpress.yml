@@ -62,7 +62,7 @@
           seconds: 60
 
 #  - name: Install node exporter
-#    hosts: wordpress1:wordpress2:mysqlmaster:mysqlslave:nginx
+#    hosts: wordpress:mysql:nginx
 #    roles:
 #      - role: monitor_node_exporter_setup
 #
@@ -73,7 +73,7 @@
 #      - monitor_grafana_setup
 #
 #  - name: Configure Wordpress frontend
-#    hosts: wordpress1:wordpress2
+#    hosts: wordpress
 #    become: yes
 #    roles:
 #      - wordpress_install
@@ -95,8 +95,8 @@
 #    become: yes
 #    roles:
 #      - mysql_slave_install
-  
-  - name: Install nginx loadbalancer
-    hosts: nginx
-    roles:
-      - nginx_load_balancer_install
+#  
+#  - name: Install nginx loadbalancer
+#    hosts: nginx
+#    roles:
+#      - nginx_load_balancer_install
