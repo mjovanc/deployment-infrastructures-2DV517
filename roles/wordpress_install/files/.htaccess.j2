@@ -1,5 +1,7 @@
 # BEGIN WordPress
 
+RewriteRule ^(wp-content/.*)$ http://{{ hostvars['nginx']['public_host'] }}/wp-content/$1 [R=301,QSA,L]
+
 RewriteEngine On
 RewriteBase /
 RewriteRule ^index\.php$ - [L]

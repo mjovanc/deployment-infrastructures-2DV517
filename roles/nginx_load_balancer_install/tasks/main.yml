@@ -25,3 +25,24 @@
     path: "/etc/nginx/sites-enabled/default"
     state: absent
   notify: Reload Nginx
+
+- name: Create directory for storing WordPress upload files
+  become: yes
+  shell: mkdir -p /var/www/wp
+
+- name: Create a ext4 filesystem on /dev/sdb unless it exists
+  become: yes
+  filesystem:
+    fstype: ext4
+    dev: /dev/sdb
+  tags: [ mount ]
+
+- name: Mount volume
+  become: yes
+  mount:
+    path: /var/www/wp
+    src: /dev/sdb
+    fstype: ext4
+    state: mounted
+  tags: [ mount ]
+  notify: Reload Nginx

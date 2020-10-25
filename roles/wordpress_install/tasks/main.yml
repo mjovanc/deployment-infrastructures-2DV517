@@ -92,7 +92,7 @@
 
   - name: Set up .htaccess
     template:
-      src: "files/.htaccess"
+      src: "files/.htaccess.j2"
       dest: "/var/www/{{ hostvars['nginx']['public_host'] }}/wordpress/.htaccess"
     tags: [ wordpress ]
 
