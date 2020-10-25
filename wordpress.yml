@@ -25,18 +25,21 @@
             auto_ip: no
             security_groups: default,SSH,HTTP,Monitor
             group_name: wordpress
+          
           - name: mysqlmaster
             auto_ip: no
             security_groups: default,SSH,MySQL,Monitor
-            group_name: wordpress
+            group_name: mysql
           - name: mysqlslave
             auto_ip: no
             security_groups: default,SSH,MySQL,Monitor
-            group_name: wordpress
+            group_name: mysql
+          
           - name: nginx
             auto_ip: yes
             security_groups: default,SSH,HTTP,Monitor
             group_name: nginx
+          
           - name: prometheus
             auto_ip: yes
             security_groups: default,SSH,HTTP,Grafana,Monitor
