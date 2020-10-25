@@ -12,5 +12,9 @@ server {
         location / {
                 proxy_pass http://backend;
         }
+
+        location /wp-content {
+                root /var/www/wp;
+        } 
 }
 
