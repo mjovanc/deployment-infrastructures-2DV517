@@ -32,21 +32,21 @@
       enabled: yes
 
   - name: Create MySQL user for master
-    become: true
+    become: yes
     shell: |
       mysql -u root -p'{{ mysql_root_password }}' -e "CREATE USER '{{ mysql_replication_user }}'@'{{ hostvars['mysqlslave']['ansible_host'] }}' IDENTIFIED BY '{{ mysql_replication_user_password }}';"
       mysql -u root -p'{{ mysql_root_password }}' -e "ALTER USER '{{ mysql_replication_user }}'@'{{ hostvars['mysqlslave']['ansible_host'] }}' IDENTIFIED WITH mysql_native_password BY '{{ mysql_replication_user_password }}';"
       mysql -u root -p'{{ mysql_root_password }}' -e "GRANT REPLICATION SLAVE ON *.* TO '{{ mysql_replication_user }}'@'{{ hostvars['mysqlslave']['ansible_host'] }}';"
     
   - name: Get MySQL master filename
+    become: yes
     shell: mysql -u root -p'{{ mysql_root_password }}' -e "SHOW MASTER STATUS" -s | tail -n 1 | awk {'print $1'}
     register: filename
-    become: true
 
   - name: Get MySQL master position
+    become: yes
     shell: mysql -u root -p'{{ mysql_root_password }}' -e "SHOW MASTER STATUS" -s | tail -n 1 | awk {'print $2'}
     register: position
-    become: true
 
   - name: Register MySQL variables
     add_host:
@@ -54,8 +54,12 @@
       ansible_mysql_filename: "{{ filename.stdout }}"
       ansible_mysql_position: "{{ position.stdout }}"
 
+  - name: Changing domain to fotos in posts
+    become: yes
+    shell: mysql -u root -p'{{ mysql_root_password }}' -e "UPDATE wp_posts SET post_content = replace(post_content, 'http://acme.example.org/', '{{ hostvars['nginx']['public_host'] }}')"
+
   - name: Send the database to slave
-    become: true
+    become: yes
     shell: |
       mysqldump --all-databases --user=root --password='{{ mysql_root_password }}' --master-data > everything.sql
       scp -i ansible_key -o StrictHostKeyChecking=accept-new everything.sql ubuntu@'{{ hostvars['mysqlslave']['ansible_host'] }}':/home/ubuntu
