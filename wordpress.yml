@@ -4,20 +4,16 @@
     roles:
       - role: instance_private_openstack_create
         vars:
-          instance_name: wordpress1
+          instance_name: "{{ item.name }}"
           instance_flavor: c1-r1-d10
           instance_key_name: ansible_key
           instance_auto_ip: no
           instance_security_groups: default,SSH,HTTP,Monitor
           instance_group_name: wordpress
-      - role: instance_private_openstack_create
-        vars:
-          instance_name: wordpress2
-          instance_flavor: c1-r1-d10
-          instance_key_name: ansible_key
-          instance_auto_ip: no
-          instance_security_groups: default,SSH,HTTP,Monitor
-          instance_group_name: wordpress
+        loop:
+          - name: wordpress1
+          - name: wordpress2
+          - name: wordpress3
       - role: instance_private_openstack_create
         vars:
           instance_name: mysqlmaster
