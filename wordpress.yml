@@ -1,63 +1,62 @@
 ---
   - name: Create instances
     hosts: localhost
-    roles:
-      - role: instance_private_openstack_create
+    tasks:
+      - name: Create openstack instances
+        include_role:
+          name: instance_private_openstack_create
         vars:
           instance_name: "{{ item.name }}"
           instance_flavor: c1-r1-d10
           instance_key_name: ansible_key
-          instance_auto_ip: no
-          instance_security_groups: default,SSH,HTTP,Monitor
-          instance_group_name: wordpress
+          instance_auto_ip: "{{ item.auto_ip }}"
+          instance_security_groups: "{{ item.security_groups }}"
+          instance_group_name: "{{ item.group_name }}"
         loop:
           - name: wordpress1
+            auto_ip: no
+            security_groups: default,SSH,HTTP,Monitor
+            group_name: wordpress
           - name: wordpress2
+            auto_ip: no
+            security_groups: default,SSH,HTTP,Monitor
+            group_name: wordpress
           - name: wordpress3
-      - role: instance_private_openstack_create
+            auto_ip: no
+            security_groups: default,SSH,HTTP,Monitor
+            group_name: wordpress
+          - name: mysqlmaster
+            auto_ip: no
+            security_groups: default,SSH,MySQL,Monitor
+            group_name: wordpress
+          - name: mysqlslave
+            auto_ip: no
+            security_groups: default,SSH,MySQL,Monitor
+            group_name: wordpress
+          - name: nginx
+            auto_ip: yes
+            security_groups: default,SSH,HTTP,Monitor
+            group_name: nginx
+          - name: prometheus
+            auto_ip: yes
+            security_groups: default,SSH,HTTP,Grafana,Monitor
+            group_name: prometheus
+      
+      - name: Attach openstack volumes
+        include_role:
+          name: openstack_attach_volume
         vars:
-          instance_name: mysqlmaster
-          instance_flavor: c1-r1-d10
-          instance_key_name: ansible_key
-          instance_auto_ip: no
-          instance_security_groups: default,SSH,MySQL,Monitor
-          instance_group_name: mysql
-      - role: instance_private_openstack_create
-        vars:
-          instance_name: mysqlslave
-          instance_flavor: c1-r1-d10
-          instance_key_name: ansible_key
-          instance_auto_ip: no
-          instance_security_groups: default,SSH,MySQL,Monitor
-          instance_group_name: mysql
-      - role: instance_private_openstack_create
-        vars:
-          instance_name: nginx
-          instance_flavor: c1-r1-d10
-          instance_key_name: ansible_key
-          instance_auto_ip: yes
-          instance_security_groups: default,SSH,HTTP,Monitor
-          instance_group_name: nginx
-      - role: instance_private_openstack_create
-        vars:
-          instance_name: prometheus
-          instance_flavor: c1-r1-d10
-          instance_key_name: ansible_key
-          instance_auto_ip: yes
-          instance_security_groups: default,SSH,HTTP,Grafana,Monitor
-          instance_group_name: monitor
-      - role: openstack_attach_volume
-        vars: 
-          volume_name: WP_MYSQL_1
-          instance_name: mysqlmaster
-      - role: openstack_attach_volume
-        vars:
-          volume_name: WP_CONTENT_1
-          instance_name: nginx
-    tasks:
-    - name: Wait for SSH
-      pause:
-        seconds: 60
+          volume_name: "{{ item.volume_name }}"
+          instance_name: "{{ item.name }}"
+        loop:
+          - name: mysqlmaster
+            volume_name: WP_MYSQL_1
+          - name: nginx
+            volume_name: WP_CONTENT_1
+
+      - name: Wait for SSH
+        pause:
+          seconds: 60
 
 #  - name: Install node exporter
 #    hosts: wordpress1:wordpress2:mysqlmaster:mysqlslave:nginx
