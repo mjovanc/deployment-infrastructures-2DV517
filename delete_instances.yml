@@ -1,0 +1,17 @@
+---
+- name: Delete instances
+  hosts: localhost
+  tasks:
+    - name: Delete openstack instance
+      include_role:
+        name: instance_openstack_delete
+      vars:
+        instance_name: "{{ item.name }}"
+      loop:
+#        - name: wordpress1
+#        - name: wordpress2
+#        - name: wordpress3
+#        - name: mysqlmaster
+#        - name: mysqlslave
+#        - name: nginx
+#        - name: prometheus
