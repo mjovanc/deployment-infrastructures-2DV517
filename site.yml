@@ -39,7 +39,7 @@
       vars:
         instance_name: ansible
         instance_flavor: c4-r8-d80
-        instance_key_name: "{{ controle_node_key }}"
+        instance_key_name: "{{ control_node_key }}"
         instance_security_groups: default,SSH
         instance_floating_ip: "{{ control_node_ip }}"
   tasks:  

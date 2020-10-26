@@ -32,10 +32,15 @@
   copy:
     src: ansibles.cfg
     dest: /etc/ansible/ansible.cfg
+
+- name: Deleting old key from openstack
+  os_keypair:
+    name: "{{ host_key }}"
+    state: absent
   
 - name: Generate new SSH keypair on openstack
   os_keypair:
-    name: "{{ new_ssh_keyname }}"
+    name: "{{ host_key }}"
   register: keypair
 
 - name: Create private key
