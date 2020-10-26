@@ -59,8 +59,8 @@
   become: yes
   copy:
     # Moving a .j2 file from host server to remote server might now work like this?
-    # src: alertmanager.yml.j2
-    src: alertmanager-0.21.0.linux-amd64/alertmanager.yml
+    src: alertmanager.yml.j2
+    # src: alertmanager-0.21.0.linux-amd64/alertmanager.yml
     dest: /etc/alertmanager/
     owner: ubuntu
     group: ubuntu
