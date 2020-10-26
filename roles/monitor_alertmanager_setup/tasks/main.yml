@@ -55,16 +55,13 @@
     owner: ubuntu
     group: ubuntu
 
-- name: Move amlertmanager.yml to /etc/alertmanager/
+- name: Move alertmanager.yml to /etc/alertmanager/
   become: yes
-  copy:
-    # Moving a .j2 file from host server to remote server might now work like this?
+  template:
     src: alertmanager.yml.j2
-    # src: alertmanager-0.21.0.linux-amd64/alertmanager.yml
-    dest: /etc/alertmanager/
+    dest: /etc/alertmanager/alertmanager.yml
     owner: ubuntu
     group: ubuntu
-    remote_src: yes
     mode: +x
 
 - name: Writing alertmanager.service file to systemd
