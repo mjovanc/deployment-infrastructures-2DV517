@@ -1,8 +1,8 @@
 ---
-- name: Attach volume to host
+- name: "Attach/Detach volume to host: {{ state }}"
   os_server_volume:
     server: "{{ instance_name }}"
     volume: "{{ volume_name }}"
     device: /dev/sdb
-    state: present
+    state: "{{ state }}"
   tags: [ attach-volume ]

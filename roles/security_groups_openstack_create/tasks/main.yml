@@ -1,5 +1,5 @@
 ---
-- name: Create a security group
+- name: "Create a security group for {{ security_group_name }}"
   os_security_group:
     name: "{{ security_group_name }}"
     state: present

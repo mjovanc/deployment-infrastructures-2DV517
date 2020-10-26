@@ -1,0 +1,5 @@
+---
+- name: "Delete instance {{ instance_name }} from openstack"
+  os_server:
+    state: absent
+    name: "{{ instance_name }}"

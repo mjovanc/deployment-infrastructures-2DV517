@@ -2,8 +2,7 @@
 - name: Create initial infrastructure on openstack
   hosts: localhost
   roles:
-    - initial_infrastructure_openstack_create
-    
+    - initial_infrastructure_openstack_create    
   tasks:  
     - name: Wait for interface to attach
       pause:
@@ -11,30 +10,25 @@
 
 - name: Create security groups
   hosts: localhost
-  roles:
-    - role: security_groups_openstack_create
+  tasks:
+    - name: Creating security groups
+      include_role:
+        name: security_groups_openstack_create
       vars:
-        security_group_name: SSH
-        security_group_port: 22
-    - role: security_groups_openstack_create
-      vars:
-        security_group_name: HTTP
-        security_group_port: 80
-    - role: security_groups_openstack_create
-      vars:
-        security_group_name: MySQL
-        security_group_port: 3306
-    - role: security_groups_openstack_create
-      vars:
-        security_group_name: Monitor
-        security_group_port: 9100
-    - role: security_groups_openstack_create
-      vars:
-        security_group_name: Grafana
-        security_group_port: 3000    
-
-  tasks:  
-    - name: Wait for security groups
+        security_group_name: "{{ item.name }}"
+        security_group_port: "{{ item.port }}"
+      loop:
+        - name: SSH
+          port: 22
+        - name: HTTP
+          port: 80
+        - name: MySQL
+          port: 3306
+        - name: Monitor
+          port: 9100
+        - name: Grafana
+          port: 3000   
+    - name: Wait for security groups to be created
       pause:
         seconds: 20
 
@@ -45,10 +39,9 @@
       vars:
         instance_name: ansible
         instance_flavor: c4-r8-d80
-        instance_key_name: cscloud-oh222fv
+        instance_key_name: "{{ controle_node_key }}"
         instance_security_groups: default,SSH
-        instance_floating_ip: 194.47.176.254 #Set in group_vars
-  
+        instance_floating_ip: "{{ control_node_ip }}"
   tasks:  
     - name: Wait for SSH to be ready
       pause:

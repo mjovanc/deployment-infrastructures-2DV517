@@ -1,0 +1,2 @@
+prometheus_version: 2.22.0 # Change verision will impact global installation.
+home_dir: /home/ubuntu/
