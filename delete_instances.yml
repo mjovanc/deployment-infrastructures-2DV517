@@ -8,10 +8,11 @@
       vars:
         instance_name: "{{ item.name }}"
       loop:
-#        - name: wordpress1
-#        - name: wordpress2
-#        - name: wordpress3
-#        - name: mysqlmaster
-#        - name: mysqlslave
-#        - name: nginx
-#        - name: prometheus
+        - name: wordpress1
+        - name: wordpress2
+        - name: wordpress3
+        - name: mysqlmaster
+        - name: mysqlslave
+        - name: nginx
+        - name: prometheus
+        - name: ansible

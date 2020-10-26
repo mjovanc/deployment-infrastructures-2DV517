@@ -24,10 +24,14 @@
           port: 80
         - name: MySQL
           port: 3306
-        - name: Monitor
+        - name: NodeExporter
           port: 9100
         - name: Grafana
-          port: 3000   
+          port: 3000
+        - name: Prometheus
+          port: 9090
+        - name: AlertManager
+          port: 9094
     - name: Wait for security groups to be created
       pause:
         seconds: 20

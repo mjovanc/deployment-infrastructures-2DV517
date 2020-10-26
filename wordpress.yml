@@ -1,104 +1,97 @@
 ---
-  - name: Create instances
-    hosts: localhost
-    tasks:
-      - name: Create openstack instances
-        include_role:
-          name: instance_private_openstack_create
-        vars:
-          instance_name: "{{ item.name }}"
-          instance_flavor: c1-r1-d10
-          instance_key_name: "{{ host_key }}"
-          instance_auto_ip: "{{ item.auto_ip }}"
-          instance_security_groups: "{{ item.security_groups }}"
-          instance_group_name: "{{ item.group_name }}"
-        loop:
-          - name: wordpress1
-            auto_ip: no
-            security_groups: default,SSH,HTTP,Monitor
-            group_name: wordpress, monitor
-          - name: wordpress2
-            auto_ip: no
-            security_groups: default,SSH,HTTP,Monitor
-            group_name: wordpress, monitor
-          - name: wordpress3
-            auto_ip: no
-            security_groups: default,SSH,HTTP,Monitor
-            group_name: wordpress, monitor
-          
-          - name: mysqlmaster
-            auto_ip: no
-            security_groups: default,SSH,MySQL,Monitor
-            group_name: mysql, monitor
-          - name: mysqlslave
-            auto_ip: no
-            security_groups: default,SSH,MySQL,Monitor
-            group_name: mysql, monitor
-          
-          - name: nginx
-            auto_ip: yes
-            security_groups: default,SSH,HTTP,Monitor
-            group_name: nginx, monitor
-          
-          - name: prometheus
-            auto_ip: yes
-            security_groups: default,SSH,HTTP,Grafana,Monitor
-            group_name: prometheus
-      
-      - name: Attach openstack volumes
-        include_role:
-          name: volume_openstack
-        vars:
-          volume_name: "{{ item.volume_name }}"
-          instance_name: "{{ item.name }}"
-          state: present
-        loop:
-          - name: mysqlmaster
-            volume_name: WP_MYSQL_1
-          - name: nginx
-            volume_name: WP_CONTENT_1
+- name: Create instances
+  hosts: localhost
+  tasks:
+    - name: Create openstack instances
+      include_role:
+        name: instance_private_openstack_create
+      vars:
+        instance_name: "{{ item.name }}"
+        instance_flavor: c1-r1-d10
+        instance_key_name: "{{ host_key }}"
+        instance_auto_ip: "{{ item.auto_ip }}"
+        instance_security_groups: "{{ item.security_groups }}"
+        instance_group_name: "{{ item.group_name }}"
+      loop:
+        - name: wordpress1
+          auto_ip: no
+          security_groups: default,SSH,HTTP,NodeExporter
+          group_name: wordpress, monitor
+        - name: wordpress2
+          auto_ip: no
+          security_groups: default,SSH,HTTP,NodeExporter
+          group_name: wordpress, monitor
+        - name: wordpress3
+          auto_ip: no
+          security_groups: default,SSH,HTTP,NodeExporter
+          group_name: wordpress, monitor
+        
+        - name: mysqlmaster
+          auto_ip: no
+          security_groups: default,SSH,MySQL,NodeExporter
+          group_name: mysql, monitor
+        - name: mysqlslave
+          auto_ip: no
+          security_groups: default,SSH,MySQL,NodeExporter
+          group_name: mysql, monitor
+        
+        - name: nginx
+          auto_ip: yes
+          security_groups: default,SSH,HTTP,NodeExporter
+          group_name: nginx, monitor
+        
+        - name: prometheus
+          auto_ip: yes
+          security_groups: default,SSH,HTTP,Grafana,Prometheus,AlertManager
+          group_name: prometheus
+    
+    - name: Attach openstack volumes
+      include_role:
+        name: volume_openstack
+      vars:
+        volume_name: "{{ item.volume_name }}"
+        instance_name: "{{ item.name }}"
+        state: present
+      loop:
+        - name: mysqlmaster
+          volume_name: WP_MYSQL_1
+        - name: nginx
+          volume_name: WP_CONTENT_1
+    - name: Wait for SSH
+      pause:
+        seconds: 60
+- name: Install node exporter
+  hosts: wordpress:mysql:nginx
+  roles:
+    - role: monitor_node_exporter_setup
+- name: Install Prometheus and Grafana
+  hosts: prometheus
+  roles:
+    - monitor_prometheus_setup
+    - monitor_grafana_setup
+    - monitor_alertmanager_setup
+- name: Configure Wordpress frontend
+  hosts: wordpress
+  become: yes
+  roles:
+    - wordpress_install
+- name: Configure Wordpress configurations on master database
+  hosts: mysqlmaster
+  become: yes
+  roles:
+    - wordpress_database_setup
+- name: Configure MySQL master database
+  hosts: mysqlmaster
+  become: yes
+  roles:
+    - mysql_master_install
+- name: Configure MySQL slave database
+  hosts: mysqlslave
+  become: yes
+  roles:
+    - mysql_slave_install
 
-      - name: Wait for SSH
-        pause:
-          seconds: 60
-
-#  - name: Install node exporter
-#    hosts: wordpress:mysql:nginx
-#    roles:
-#      - role: monitor_node_exporter_setup
-#
-#  - name: Install Prometheus and Grafana
-#    hosts: prometheus
-#    roles:
-#      - monitor_prometheus_setup
-#      - monitor_grafana_setup
-#      - monitor_alertmanager_setup
-#
-#  - name: Configure Wordpress frontend
-#    hosts: wordpress
-#    become: yes
-#    roles:
-#      - wordpress_install
-#
-#  - name: Configure Wordpress configurations on master database
-#    hosts: mysqlmaster
-#    become: yes
-#    roles:
-#      - wordpress_database_setup
-#
-#  - name: Configure MySQL master database
-#    hosts: mysqlmaster
-#    become: yes
-#    roles:
-#      - mysql_master_install
-#
-#  - name: Configure MySQL slave database
-#    hosts: mysqlslave
-#    become: yes
-#    roles:
-#      - mysql_slave_install
-#  
-#  - name: Install nginx loadbalancer
-#    hosts: nginx
-#    roles:
-#      - nginx_load_balancer_install
+- name: Install nginx loadbalancer
+  hosts: nginx
+  roles:
+    - nginx_load_balancer_install
