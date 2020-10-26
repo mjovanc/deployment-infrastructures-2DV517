@@ -20,6 +20,6 @@ scrape_configs:
       # Switch targets to the ones you want to monitor, also make sure node_exporter is installed on them.
       - targets: [
         {% for host in groups['monitor'] %}
-          server {{ hostvars[host]['ansible_host'] }}:9100,
+          {{ hostvars[host]['ansible_host'] }}:9100,
         {% endfor %}
       ]
