@@ -96,6 +96,15 @@
     owner: ubuntu
     group: ubuntu
 
+- name: Writing rules.yml file
+  become: yes
+  copy:
+    # Switch the src file to accurate src
+    src: rules.yml
+    dest: /etc/prometheus/rules.yml
+    owner: ubuntu
+    group: ubuntu
+
 - name: Make sure user is in bin directory
   become: yes
   command: bash -lc "cd /usr/local/bin/"
