@@ -1,6 +1,0 @@
----
-  - name: Ubuntu update and upgrade
-    apt:
-      update_cache: yes 
-#      upgrade: dist
-    tags: [ system ]

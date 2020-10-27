@@ -10,8 +10,6 @@ route:
   receiver: 'web.hook'
 receivers:
 - name: 'web.hook'
-  webhook_configs:
-  - url: "alert_webhook"
 inhibit_rules:
   - source_match:
       severity: 'critical'

@@ -5,7 +5,7 @@ groups:
   - alert: InstanceDown
    # Condition for alerting
     expr: up == 0
-    for: 1m
+    for: 10s
    # Annotation - additional informational labels to store more information
     annotations:
       title: 'Instance {{ $labels.instance }} down'

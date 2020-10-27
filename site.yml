@@ -17,6 +17,7 @@
       vars:
         security_group_name: "{{ item.name }}"
         security_group_port: "{{ item.port }}"
+        security_group_state: present
       loop:
         - name: SSH
           port: 22
@@ -31,7 +32,7 @@
         - name: Prometheus
           port: 9090
         - name: AlertManager
-          port: 9094
+          port: 9093
     - name: Wait for security groups to be created
       pause:
         seconds: 20

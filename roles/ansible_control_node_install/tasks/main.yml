@@ -37,17 +37,20 @@
   os_keypair:
     name: "{{ host_key }}"
     state: absent
+  tags: [ key ]
   
 - name: Generate new SSH keypair on openstack
   os_keypair:
     name: "{{ host_key }}"
   register: keypair
+  tags: [ key ]
 
 - name: Create private key
   copy:
     content: "{{ keypair.key.private_key }}"
     dest: "{{ path_home }}/.ssh/{{ keypair.key.name }}"
     mode: '400' 
+  tags: [ key ]
     
 - name: Clone project repo from github
   git:
