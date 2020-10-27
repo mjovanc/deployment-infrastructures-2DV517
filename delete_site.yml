@@ -1,8 +1,8 @@
 ---
-#- name: Delete initial infrastructure on openstack
-#  hosts: localhost
-#  roles:
-#    - initial_infrastructure_openstack_delete
+- name: Delete initial infrastructure on openstack
+  hosts: localhost
+  roles:
+    - initial_infrastructure_openstack_delete
 
 - name: Delete security groups
   hosts: localhost
@@ -21,3 +21,11 @@
         - name: Grafana
         - name: Prometheus
         - name: AlertManager
+
+- name: Delete host key
+  hosts: localhost
+  tasks:
+    - name: Deleting old key from openstack
+      os_keypair:
+        name: "{{ host_key }}"
+        state: absent
