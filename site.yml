@@ -17,6 +17,7 @@
       vars:
         security_group_name: "{{ item.name }}"
         security_group_port: "{{ item.port }}"
+        security_group_state: present
       loop:
         - name: SSH
           port: 22

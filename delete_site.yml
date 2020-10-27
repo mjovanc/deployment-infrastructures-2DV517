@@ -1,5 +1,23 @@
 ---
-- name: Delete initial infrastructure on openstack
+#- name: Delete initial infrastructure on openstack
+#  hosts: localhost
+#  roles:
+#    - initial_infrastructure_openstack_delete
+
+- name: Delete security groups
   hosts: localhost
-  roles:
-    - initial_infrastructure_openstack_delete
+  tasks:
+    - name: Delete security group
+      include_role:
+        name: security_groups_openstack_create
+      vars:
+        security_group_name: "{{ item.name }}"
+        security_group_state: "absent"
+      loop:
+        - name: SSH
+        - name: HTTP
+        - name: MySQL
+        - name: NodeExporter
+        - name: Grafana
+        - name: Prometheus
+        - name: AlertManager

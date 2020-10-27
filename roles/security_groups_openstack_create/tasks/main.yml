@@ -1,8 +1,8 @@
 ---
-- name: "Create a security group for {{ security_group_name }}"
+- name: "Create/Delete a security group for {{ security_group_name }}: {{ security_group_state }}"
   os_security_group:
     name: "{{ security_group_name }}"
-    state: present
+    state: "{{ security_group_state }}"
 
 - name: Add rule to security group
   os_security_group_rule:
@@ -11,3 +11,4 @@
     port_range_min: "{{ security_group_port }}"
     port_range_max: "{{ security_group_port }}"
     remote_ip_prefix: 0.0.0.0/0
+  when: security_group_state == "present"
