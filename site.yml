@@ -31,7 +31,7 @@
         - name: Prometheus
           port: 9090
         - name: AlertManager
-          port: 9094
+          port: 9093
     - name: Wait for security groups to be created
       pause:
         seconds: 20
